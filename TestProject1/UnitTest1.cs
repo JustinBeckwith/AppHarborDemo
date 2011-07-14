@@ -62,7 +62,7 @@ namespace TestProject1
 		[TestMethod]
 		public void TestMethod1()
 		{
-			// assume it passes
+			Assert.Fail();
 		}
 	}
 }
