@@ -1,0 +1,7 @@
+C:\Users\justbe\Code\MvcFun\MvcFun\bin\MvcFun.dll
+C:\Users\justbe\Code\MvcFun\MvcFun\bin\MvcFun.pdb
+C:\Users\justbe\Code\MvcFun\MvcFun\bin\EntityFramework.dll
+C:\Users\justbe\Code\MvcFun\MvcFun\bin\EntityFramework.xml
+C:\Users\justbe\Code\MvcFun\MvcFun\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\justbe\Code\MvcFun\MvcFun\obj\Debug\MvcFun.dll
+C:\Users\justbe\Code\MvcFun\MvcFun\obj\Debug\MvcFun.pdb
