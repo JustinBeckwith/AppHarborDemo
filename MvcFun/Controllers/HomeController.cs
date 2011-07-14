@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using MvcFun.ServiceReference1;
+
 namespace MvcFun.Controllers
 {
 	public class HomeController : Controller
@@ -17,6 +19,9 @@ namespace MvcFun.Controllers
 
 		public ActionResult About()
 		{
+			IService1 svc = new Service1Client();
+			string result = svc.GetData(23);
+			ViewBag.data = result;
 			return View();
 		}
 	}

@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcFun", "MvcFun\MvcFun.csproj", "{FFE0EBF6-D332-40C6-A3EF-7FF746658BE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5028E397-BF26-41BF-9674-6537F4AB5324} = {5028E397-BF26-41BF-9674-6537F4AB5324}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "WcfService\WcfService.csproj", "{5028E397-BF26-41BF-9674-6537F4AB5324}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +18,10 @@ Global
 		{FFE0EBF6-D332-40C6-A3EF-7FF746658BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFE0EBF6-D332-40C6-A3EF-7FF746658BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFE0EBF6-D332-40C6-A3EF-7FF746658BE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5028E397-BF26-41BF-9674-6537F4AB5324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5028E397-BF26-41BF-9674-6537F4AB5324}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5028E397-BF26-41BF-9674-6537F4AB5324}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5028E397-BF26-41BF-9674-6537F4AB5324}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
