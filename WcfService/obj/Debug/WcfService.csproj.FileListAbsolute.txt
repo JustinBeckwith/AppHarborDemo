@@ -1,5 +1,0 @@
-C:\Users\justbe\Code\MvcFun\WcfService\bin\WcfService.dll
-C:\Users\justbe\Code\MvcFun\WcfService\bin\WcfService.pdb
-C:\Users\justbe\Code\MvcFun\WcfService\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\justbe\Code\MvcFun\WcfService\obj\Debug\WcfService.dll
-C:\Users\justbe\Code\MvcFun\WcfService\obj\Debug\WcfService.pdb

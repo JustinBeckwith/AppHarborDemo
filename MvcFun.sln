@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcFun", "MvcFun\MvcFun.csp
 		{5028E397-BF26-41BF-9674-6537F4AB5324} = {5028E397-BF26-41BF-9674-6537F4AB5324}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "WcfService\WcfService.csproj", "{5028E397-BF26-41BF-9674-6537F4AB5324}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "..\WcfService\WcfService.csproj", "{5028E397-BF26-41BF-9674-6537F4AB5324}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
