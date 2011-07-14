@@ -23,9 +23,7 @@ namespace MvcFun.Controllers
 
 			IService1 svc = new Service1Client();
 			string result = svc.GetData(23);
-			ViewBag.data = result;			
-			
-
+			ViewBag.data = result;						
 			return View();
 		}
 	}
