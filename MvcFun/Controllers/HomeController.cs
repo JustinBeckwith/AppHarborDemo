@@ -19,6 +19,8 @@ namespace MvcFun.Controllers
 
 		public ActionResult About()
 		{
+			throw new Exception("Waving my arms about wildly!");
+
 			IService1 svc = new Service1Client();
 			string result = svc.GetData(23);
 			ViewBag.data = result;
