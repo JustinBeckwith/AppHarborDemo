@@ -1,0 +1,5 @@
+C:\Users\justbe\Code\MvcFun\TestProject1\bin\Release\TestProject1.dll
+C:\Users\justbe\Code\MvcFun\TestProject1\bin\Release\TestProject1.pdb
+C:\Users\justbe\Code\MvcFun\TestProject1\obj\Release\ResolveAssemblyReference.cache
+C:\Users\justbe\Code\MvcFun\TestProject1\obj\Release\TestProject1.dll
+C:\Users\justbe\Code\MvcFun\TestProject1\obj\Release\TestProject1.pdb

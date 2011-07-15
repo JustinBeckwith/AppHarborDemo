@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Configuration;
 
 using MvcFun.ServiceReference1;
 
@@ -20,10 +21,19 @@ namespace MvcFun.Controllers
 		public ActionResult About()
 		{
 			//throw new Exception("Waving my arms about wildly!");
+			ViewBag.where = ConfigurationManager.AppSettings["where"];
+			
+
 
 			IService1 svc = new Service1Client();
+			//int noWayThisWorks = svc.
+
+
 			string result = svc.GetData(23);
-			ViewBag.data = result;						
+			ViewBag.data = result;
+			
+			
+						
 			return View();
 		}
 	}
