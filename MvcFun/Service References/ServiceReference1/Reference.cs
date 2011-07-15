@@ -78,6 +78,9 @@ namespace MvcFun.ServiceReference1 {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService1")]
     public interface IService1 {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SomethingBad", ReplyAction="http://tempuri.org/IService1/SomethingBadResponse")]
+        int SomethingBad();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetData", ReplyAction="http://tempuri.org/IService1/GetDataResponse")]
         string GetData(int value);
         
@@ -110,6 +113,10 @@ namespace MvcFun.ServiceReference1 {
         
         public Service1Client(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
+        }
+        
+        public int SomethingBad() {
+            return base.Channel.SomethingBad();
         }
         
         public string GetData(int value) {

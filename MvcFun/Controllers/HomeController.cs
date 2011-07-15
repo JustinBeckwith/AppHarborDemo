@@ -23,16 +23,11 @@ namespace MvcFun.Controllers
 			//throw new Exception("Waving my arms about wildly!");
 			ViewBag.where = ConfigurationManager.AppSettings["where"];
 			
-
-
 			IService1 svc = new Service1Client();
-			//int noWayThisWorks = svc.
-
+			int noWayThisWorks = svc.SomethingBad();
 
 			string result = svc.GetData(23);
-			ViewBag.data = result;
-			
-			
+			ViewBag.data = result;						
 						
 			return View();
 		}
