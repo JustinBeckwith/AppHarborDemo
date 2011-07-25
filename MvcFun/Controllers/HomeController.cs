@@ -24,8 +24,9 @@ namespace MvcFun.Controllers
 			ViewBag.where = ConfigurationManager.AppSettings["where"];
 			
 			IService1 svc = new Service1Client();
-			int noWayThisWorks = svc.SomethingBad();
+			//int noWayThisWorks = svc.SomethingBad();
 
+			
 			string result = svc.GetData(23);
 			ViewBag.data = result;						
 						
