@@ -1,0 +1,20 @@
+﻿@model MvcFun.Models.Notification
+
+@{
+    ViewBag.Title = "DeployHook";
+}
+
+<h2>DeployHook</h2>
+
+<fieldset>
+    <legend>Notification</legend>
+	<ul>		
+		<li>@Model.application.name</li>
+		<li>@Model.build.BuildId</li>
+		<li>@Model.build.commit.id</li>
+		<li>@Model.build.commit.message</li>
+		<li>@Model.build.status</li>
+	</ul>
+	
+</fieldset>
+
