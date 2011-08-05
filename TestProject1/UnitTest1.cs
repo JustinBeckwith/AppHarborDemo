@@ -59,10 +59,26 @@ namespace TestProject1
 		//
 		#endregion
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		[TestMethod]
 		public void TestMethod1()
 		{
-			Console.WriteLine("it passed!");
+			var x = 1 + 2;
+			Assert.IsTrue(x == 3);
 		}
 	}
 }
