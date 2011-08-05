@@ -11,20 +11,42 @@ using MvcFun.Models;
 using MvcFun.ServiceReference1;
 
 using Twilio;
+using Enyim.Caching;
+using Enyim.Caching.Memcached;
 
 
 namespace MvcFun.Controllers
 {
+	/// <summary>
+	/// Home Controller for appharbor demo app
+	/// </summary>
 	public class HomeController : Controller
 	{
+		//--------------------------------------------------------------------------
+		//
+		//	Controller Actions
+		//
+		//--------------------------------------------------------------------------
+
+		#region Index
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		public ActionResult Index()
 		{
-			ViewBag.Message = "Welcome to ASP.NET MVC!";
+			ViewBag.Message = "Welcome to my AppHarbor demo application!";						
 
 			return View();
 		}
+		#endregion
 
-		public ActionResult About()
+		#region WCF
+		/// <summary>
+		/// invoke the WCF service running at wcffun.apphb.com/service1.svc
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult WCF()
 		{
 			//throw new Exception("Waving my arms about wildly!");
 			ViewBag.where = ConfigurationManager.AppSettings["where"];
@@ -32,13 +54,44 @@ namespace MvcFun.Controllers
 			IService1 svc = new Service1Client();						
 			string result = svc.GetData(23);
 
-			ViewBag.data = result;
-
-			//this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", "yourapp", "goodness"));
+			ViewBag.data = result;			
 
 			return View();
 		}
+		#endregion
 
+		#region Cache
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Cache()
+		{
+			object cacheTicks;
+
+
+			bool yeah = Globals.Cache.Store(StoreMode.Set, "NowTicks", DateTime.Now.Ticks);
+
+
+
+			if (!Globals.Cache.TryGet("NowTicks", out cacheTicks))
+			{
+				Globals.Cache.Store(StoreMode.Set, "NowTicks", DateTime.Now.Ticks);
+			}
+
+			ViewBag.CacheTicks = cacheTicks;
+			ViewBag.NowTicks = DateTime.Now.Ticks;						
+
+			return View();
+		}
+		#endregion
+
+		#region DeployHook
+		/// <summary>
+		/// when a build on appharbor completes, this lets us pipe a notification via twilio to my cell phone
+		/// </summary>
+		/// <param name="notify"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult DeployHook(MvcFun.Models.Notification notify)
 		{
@@ -60,8 +113,31 @@ namespace MvcFun.Controllers
 
 			return View(notify);
 		}
+		#endregion
 
+		#region SQLServer
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult SQLServer()
+		{
+			var db = new db3364Entities();
+			return View(db.Videos.ToList());
+		}
+		#endregion
 
+		//--------------------------------------------------------------------------
+		//
+		//	Internal Methods
+		//
+		//--------------------------------------------------------------------------
+
+		#region SendMessage
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
 		protected void SendMessage(string message)
 		{
 			string accountSid = "AC4535a3259069b70dbc641954a9b7ae0f";
@@ -83,5 +159,6 @@ namespace MvcFun.Controllers
 			System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
 			string response = sr.ReadToEnd().Trim();
 		}
+		#endregion
 	}
 }
