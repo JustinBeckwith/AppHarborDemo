@@ -11,9 +11,18 @@ Memcacher provides AppHarbor with a locally run distributed caching service.  Un
 <br />
 
 <div>
-Now Ticks: @ViewBag.NowTicks
-<br />
-Cache Ticks: @ViewBag.CacheTicks
+	Time to load: @ViewBag.TimeToLoad
+	<br />
+	Cache Hit: @ViewBag.CacheHit
 </div>
+
+<br />
+
+<ul> 
+	@foreach (MvcFun.Models.Video v in Model) {
+		<li><a href="@v.Url" target="_blank">@v.Title</a></li>
+	}
+</ul>
+
 
 

@@ -67,17 +67,27 @@ namespace MvcFun.Controllers
 		/// <returns></returns>
 		public ActionResult Cache()
 		{
-			object cacheTicks;			
+			object cacheVideos;
 
-			if (!Globals.Cache.TryGet("NowTicks", out cacheTicks))
+			var startTime = DateTime.Now;
+
+			// attempt to load the videos out of the cache
+			if (!Globals.Cache.TryGet("Videos", out cacheVideos))
 			{
-				Globals.Cache.Store(StoreMode.Set, "NowTicks", DateTime.Now.Ticks);
+				// videos aren't in the cache - load them from the db
+				ViewBag.CacheHit = false;
+				var db = new db3364Entities();
+				cacheVideos = db.Videos.ToList();
+				Globals.Cache.Store(StoreMode.Set, "Videos", cacheVideos);
 			}
-
-			ViewBag.CacheTicks = cacheTicks;
-			ViewBag.NowTicks = DateTime.Now.Ticks;						
-
-			return View();
+			else
+			{
+				// video
+				ViewBag.CacheHit = true;
+			}
+			
+			ViewBag.TimeToLoad = DateTime.Now.Subtract(startTime).Milliseconds;			
+			return View(cacheVideos);
 		}
 		#endregion
 
