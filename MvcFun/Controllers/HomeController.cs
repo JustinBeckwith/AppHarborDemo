@@ -89,13 +89,7 @@ namespace MvcFun.Controllers
 			ViewBag.TimeToLoad = DateTime.Now.Subtract(startTime).Milliseconds;			
 			return View(cacheVideos);
 		}
-
-		[HttpPost]
-		public ActionResult Cache(FormCollection collection)
-		{
-			Globals.Cache.FlushAll();
-			return Cache();
-		}
+		
 		#endregion
 
 		#region DeployHook
@@ -134,8 +128,16 @@ namespace MvcFun.Controllers
 		/// <returns></returns>
 		public ActionResult SQLServer()
 		{
+			Globals.Cache.FlushAll();
+
+			var startTime = DateTime.Now;
+
 			var db = new db3364Entities();
-			return View(db.Videos.ToList());
+			IList<Video> videos = db.Videos.ToList();
+
+			ViewBag.TimeToLoad = DateTime.Now.Subtract(startTime).Milliseconds;
+
+			return View(videos);
 		}
 		#endregion
 

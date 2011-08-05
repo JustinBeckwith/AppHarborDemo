@@ -6,6 +6,15 @@
 
 This is an example of reading data from a SQL Server database running in a shared instance with AppHarbor.  
 
+
+<br />
+
+<div>
+	Time to load: @ViewBag.TimeToLoad	
+</div>
+
+<br />
+
 <ul> 
 	@foreach (MvcFun.Models.Video v in Model) {
 		<li><a href="@v.Url" target="_blank">@v.Title</a></li>
