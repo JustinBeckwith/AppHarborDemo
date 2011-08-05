@@ -62,8 +62,8 @@ namespace MvcFunTests
 		[TestMethod]
 		public void TestMethod1()
 		{
-			var x = 1 + 2;
-			Assert.IsTrue(x == 3);
+			var x = 1 + 3;
+			Assert.IsTrue(x == 4);
 		}
 	}
 }
