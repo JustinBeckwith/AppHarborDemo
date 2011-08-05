@@ -89,6 +89,13 @@ namespace MvcFun.Controllers
 			ViewBag.TimeToLoad = DateTime.Now.Subtract(startTime).Milliseconds;			
 			return View(cacheVideos);
 		}
+
+		[HttpPost]
+		public ActionResult Cache(FormCollection collection)
+		{
+			Globals.Cache.FlushAll();
+			return Cache();
+		}
 		#endregion
 
 		#region DeployHook
