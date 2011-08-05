@@ -34,19 +34,7 @@ namespace MvcFun.Controllers
 
 			ViewBag.data = result;
 
-			string postData = "{\"application\": {\"name\": \"Foo\"}, \"build\": {\"commit\": {\"id\": \"77d991fe61187d205f329ddf9387d118a09fadcd\", \"message\": \"Implement foo\"}, \"status\": \"succeeded\"}}";
-			string baseURI = "http://mvcfun.apphb.com/Home/DeployHook";
-			WebRequest req = System.Net.WebRequest.Create(baseURI);						
-			req.ContentType = "application/x-www-form-urlencoded";
-			req.Method = "POST";			
-			byte[] bytes = System.Text.Encoding.ASCII.GetBytes(postData);
-			req.ContentLength = bytes.Length;
-			System.IO.Stream os = req.GetRequestStream();
-			os.Write(bytes, 0, bytes.Length); //Push it out there
-			os.Close();
-			System.Net.WebResponse resp = req.GetResponse();			
-			System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
-			string response = sr.ReadToEnd().Trim();
+			//this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", "yourapp", "goodness"));
 
 			return View();
 		}
@@ -68,7 +56,8 @@ namespace MvcFun.Controllers
 			//  }
 			//}
 
-			this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", notify.application.name, notify.build.status));
+			//this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", notify.application.name, notify.build.status));
+			this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", "yourapp", "goodness"));
 
 			return View(notify);
 		}
