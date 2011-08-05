@@ -67,12 +67,7 @@ namespace MvcFun.Controllers
 		/// <returns></returns>
 		public ActionResult Cache()
 		{
-			object cacheTicks;
-
-
-			bool yeah = Globals.Cache.Store(StoreMode.Set, "NowTicks", DateTime.Now.Ticks);
-
-
+			object cacheTicks;			
 
 			if (!Globals.Cache.TryGet("NowTicks", out cacheTicks))
 			{
