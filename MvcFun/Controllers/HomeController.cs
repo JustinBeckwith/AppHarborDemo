@@ -84,7 +84,7 @@ namespace MvcFun.Controllers
 			req.Credentials = nc;
 			req.ContentType = "application/x-www-form-urlencoded";
 			req.Method = "POST";
-			string parameters = "From=+4155992671&To=+7247771008&Body=helloworld";
+			string parameters = "From=+4155992671&To=+7247771008&Body=" + HttpUtility.UrlEncode(message);
 			byte[] bytes = System.Text.Encoding.ASCII.GetBytes(parameters);
 			req.ContentLength = bytes.Length;
 			System.IO.Stream os = req.GetRequestStream();
