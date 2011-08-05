@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TestProject1
+namespace MvcFunTests
 {
 	/// <summary>
 	/// Summary description for UnitTest1
 	/// </summary>
 	[TestClass]
-	public class UnitTest1
+	public class Test1
 	{
-		public UnitTest1()
+		public Test1()
 		{
 			//
 			// TODO: Add constructor logic here
@@ -58,21 +58,6 @@ namespace TestProject1
 		// public void MyTestCleanup() { }
 		//
 		#endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		[TestMethod]
 		public void TestMethod1()

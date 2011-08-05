@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{6E89059D-81A5-48CE-8DCB-02B2080B72BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcFunTests", "MvcFunTests\MvcFunTests.csproj", "{6E89059D-81A5-48CE-8DCB-02B2080B72BA}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
