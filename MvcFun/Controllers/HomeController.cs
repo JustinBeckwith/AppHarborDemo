@@ -71,7 +71,8 @@ namespace MvcFun.Controllers
 		{
 			object cacheVideos;
 
-			var startTime = DateTime.Now;
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
 
 			// attempt to load the videos out of the cache
 			if (!Globals.Cache.TryGet("Videos", out cacheVideos))
@@ -87,8 +88,10 @@ namespace MvcFun.Controllers
 				// video
 				ViewBag.CacheHit = true;
 			}
-			
-			ViewBag.TimeToLoad = DateTime.Now.Subtract(startTime).Milliseconds;			
+
+			sw.Stop();
+
+			ViewBag.TimeToLoad = sw.ElapsedTicks;
 			return View(cacheVideos);
 		}
 		
