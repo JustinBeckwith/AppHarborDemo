@@ -4,9 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
+using System.Net;
+using System.Collections.Specialized;
 
 using MvcFun.Models;
 using MvcFun.ServiceReference1;
+
+using Twilio;
+
 
 namespace MvcFun.Controllers
 {
@@ -27,13 +32,13 @@ namespace MvcFun.Controllers
 			IService1 svc = new Service1Client();						
 			string result = svc.GetData(23);
 
-			ViewBag.data = result;						
-						
+			ViewBag.data = result;							
+
 			return View();
 		}
 
 		[HttpPost]
-		public ActionResult DeployHook(Notification notify)
+		public ActionResult DeployHook(MvcFun.Models.Notification notify)
 		{
 
 			//{
@@ -49,11 +54,32 @@ namespace MvcFun.Controllers
 			//  }
 			//}
 
-
-
-
+			this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", notify.application.name, notify.build.status));
 
 			return View(notify);
+		}
+
+
+		protected void SendMessage(string message)
+		{
+			string accountSid = "AC4535a3259069b70dbc641954a9b7ae0f";
+			string authToken = "f5c3c5f80a251cdf571812483d09ba3c";
+			string baseURI = "https://api.twilio.com/2010-04-01";
+			WebRequest req = System.Net.WebRequest.Create(string.Format("{0}/Accounts/{1}/SMS/Messages", baseURI, accountSid));
+			NetworkCredential nc = new NetworkCredential(accountSid, authToken);
+			req.Credentials = nc;
+			req.ContentType = "application/x-www-form-urlencoded";
+			req.Method = "POST";
+			string parameters = "From=+4155992671&To=+7247771008&Body=helloworld";
+			byte[] bytes = System.Text.Encoding.ASCII.GetBytes(parameters);
+			req.ContentLength = bytes.Length;
+			System.IO.Stream os = req.GetRequestStream();
+			os.Write(bytes, 0, bytes.Length); //Push it out there
+			os.Close();
+			System.Net.WebResponse resp = req.GetResponse();
+			if (resp == null) return;
+			System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
+			string response = sr.ReadToEnd().Trim();
 		}
 	}
 }
