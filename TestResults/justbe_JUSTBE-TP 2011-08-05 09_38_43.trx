@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="8a2f7131-ea0a-4495-aa98-213e6b9fdc7c" name="justbe@JUSTBE-TP 2011-08-05 09:38:43" runUser="REDMOND\justbe" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Local" id="183d1d1a-231b-4bcf-9965-3e5311c151a9">
+    <Description>These are default test settings for a local test run.</Description>
+    <Deployment enabled="false" runDeploymentRoot="justbe_JUSTBE-TP 2011-08-05 09_38_43" />
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2011-08-05T09:38:43.5673522-07:00" queuing="2011-08-05T09:38:45.3673522-07:00" start="2011-08-05T09:38:45.5163522-07:00" finish="2011-08-05T09:38:47.8663522-07:00" />
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="TestMethod1" storage="c:\users\justbe\mesh\code\mvcfun\testproject1\bin\debug\testproject1.dll" id="59863143-3238-122e-4d8a-637b491cc755">
+      <Execution id="dbfbb944-615b-46b6-8055-416ab13e973b" />
+      <TestMethod codeBase="C:/Users/justbe/Mesh/Code/MvcFun/TestProject1/bin/Debug/TestProject1.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject1.UnitTest1, TestProject1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TestMethod1" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="59863143-3238-122e-4d8a-637b491cc755" executionId="dbfbb944-615b-46b6-8055-416ab13e973b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="dbfbb944-615b-46b6-8055-416ab13e973b" testId="59863143-3238-122e-4d8a-637b491cc755" testName="TestMethod1" computerName="JUSTBE-TP" duration="00:00:00.0123620" startTime="2011-08-05T09:38:45.5963522-07:00" endTime="2011-08-05T09:38:47.6903522-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dbfbb944-615b-46b6-8055-416ab13e973b">
+      <Output>
+        <StdOut>it passed!</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>
