@@ -197,6 +197,7 @@
     </None>
     <Content Include="Views\Home\DeployHook.cshtml" />
     <Content Include="Views\Home\Cache.cshtml" />
+    <Content Include="Views\Home\PubSub.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -154,6 +154,17 @@ namespace MvcFun.Controllers
 		}
 		#endregion
 
+		#region PubSub
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult PubSub()
+		{
+			return View();
+		}
+		#endregion
+
 		//--------------------------------------------------------------------------
 		//
 		//	Internal Methods
