@@ -79,8 +79,10 @@ namespace MvcFun.Controllers
 			{
 				// videos aren't in the cache - load them from the db
 				ViewBag.CacheHit = false;
-				var db = new db3364Entities();
-				cacheVideos = db.Videos.ToList();
+				using (var db = new db3364Entities())
+				{
+					cacheVideos = db.Videos.ToList();
+				}
 				Globals.Cache.Store(StoreMode.Set, "Videos", cacheVideos);
 			}
 			else
@@ -138,8 +140,11 @@ namespace MvcFun.Controllers
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 
-			var db = new db3364Entities();
-			IList<Video> videos = db.Videos.ToList();
+			IList<Video> videos;
+			using (var db = new db3364Entities())
+			{
+				videos = db.Videos.ToList();
+			}
 
 			sw.Stop();
 
