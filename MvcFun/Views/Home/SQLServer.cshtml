@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Index";    
+}
+
+<h2>Using SQL Server</h2>
+
+This is an example of reading data from a SQL Server database running in a shared instance with AppHarbor.  
+
+<ul> 
+	@foreach (MvcFun.Models.Video v in Model) {
+		<li><a href="@v.Url" target="_blank">@v.Title</a></li>
+	}
+</ul>
