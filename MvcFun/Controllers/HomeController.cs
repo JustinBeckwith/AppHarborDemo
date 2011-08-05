@@ -55,9 +55,8 @@ namespace MvcFun.Controllers
 			//    "status": "succeeded"
 			//  }
 			//}
-
-			//this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", notify.application.name, notify.build.status));
-			this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", "yourapp", "goodness"));
+			
+			this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", notify.application.name, notify.build.status));
 
 			return View(notify);
 		}
