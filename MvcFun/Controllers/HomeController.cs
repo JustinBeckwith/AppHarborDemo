@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Configuration;
 using System.Net;
 using System.Collections.Specialized;
+using System.Diagnostics;
+
 
 using MvcFun.Models;
 using MvcFun.ServiceReference1;
@@ -130,12 +132,15 @@ namespace MvcFun.Controllers
 		{
 			Globals.Cache.FlushAll();
 
-			var startTime = DateTime.Now;
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
 
 			var db = new db3364Entities();
 			IList<Video> videos = db.Videos.ToList();
 
-			ViewBag.TimeToLoad = DateTime.Now.Subtract(startTime).Milliseconds;
+			sw.Stop();
+
+			ViewBag.TimeToLoad = sw.ElapsedTicks;
 
 			return View(videos);
 		}
