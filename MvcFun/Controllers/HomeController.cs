@@ -32,7 +32,21 @@ namespace MvcFun.Controllers
 			IService1 svc = new Service1Client();						
 			string result = svc.GetData(23);
 
-			ViewBag.data = result;							
+			ViewBag.data = result;
+
+			string postData = "{\"application\": {\"name\": \"Foo\"}, \"build\": {\"commit\": {\"id\": \"77d991fe61187d205f329ddf9387d118a09fadcd\", \"message\": \"Implement foo\"}, \"status\": \"succeeded\"}}";
+			string baseURI = "http://mvcfun.apphb.com/Home/DeployHook";
+			WebRequest req = System.Net.WebRequest.Create(baseURI);						
+			req.ContentType = "application/x-www-form-urlencoded";
+			req.Method = "POST";			
+			byte[] bytes = System.Text.Encoding.ASCII.GetBytes(postData);
+			req.ContentLength = bytes.Length;
+			System.IO.Stream os = req.GetRequestStream();
+			os.Write(bytes, 0, bytes.Length); //Push it out there
+			os.Close();
+			System.Net.WebResponse resp = req.GetResponse();			
+			System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
+			string response = sr.ReadToEnd().Trim();
 
 			return View();
 		}
