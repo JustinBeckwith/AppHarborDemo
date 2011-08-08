@@ -170,10 +170,12 @@ namespace MvcFun.Controllers
 		{
 			// get the dynamic redis host
 			var redisUrl = ConfigurationManager.AppSettings.Get("REDISTOGO_URL");
-			var redisHost = redisUrl.Substring(0, redisUrl.LastIndexOf(":"));
-			var redisPort = int.Parse(redisUrl.Substring(redisUrl.LastIndexOf(":")+1).Trim('/'));
+			var redisHost = redisUrl.Substring(8, redisUrl.LastIndexOf(":")-8);
+			var redisPort = int.Parse(redisUrl.Substring(redisUrl.LastIndexOf(":")+1).Trim('/'));			
 
-			using (var redisClient = new RedisClient(redisHost, redisPort)) 
+			//<add key="REDISTOGO_URL" value="redis://redistogo-appharbor:553eee0ecf0a87501f5c67cb4302fc55@angler.redistogo.com:9313/" />	  
+
+			using (var redisClient = new RedisClient()) 
 			{
 				IRedisTypedClient<People> redis = redisClient.GetTypedClient<People>();
 
