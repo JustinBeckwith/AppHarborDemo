@@ -13,9 +13,12 @@ using MvcFun.Models;
 using MvcFun.ServiceReference1;
 
 using Twilio;
+
 using Enyim.Caching;
 using Enyim.Caching.Memcached;
 
+using ServiceStack.Redis;
+using ServiceStack.Redis.Generic;
 
 namespace MvcFun.Controllers
 {
@@ -71,10 +74,12 @@ namespace MvcFun.Controllers
 		{
 			object cacheVideos;
 
+			/*
+			 *  load and store the data using memcahced
+			 */
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 
-			// attempt to load the videos out of the cache
 			if (!Globals.Cache.TryGet("Videos", out cacheVideos))
 			{
 				// videos aren't in the cache - load them from the db
@@ -94,6 +99,8 @@ namespace MvcFun.Controllers
 			sw.Stop();
 
 			ViewBag.TimeToLoad = sw.ElapsedTicks;
+		
+
 			return View(cacheVideos);
 		}
 		
@@ -161,6 +168,42 @@ namespace MvcFun.Controllers
 		/// <returns></returns>
 		public ActionResult PubSub()
 		{
+			// get the dynamic redis host
+			var redisUrl = ConfigurationManager.AppSettings.Get("REDISTOGO_URL");
+			var redisHost = redisUrl.Substring(0, redisUrl.LastIndexOf(":"));
+			var redisPort = int.Parse(redisUrl.Substring(redisUrl.LastIndexOf(":")+1).Trim('/'));
+
+			using (var redisClient = new RedisClient(redisHost, redisPort)) 
+			{
+				IRedisTypedClient<People> redis = redisClient.GetTypedClient<People>();
+
+				var currentPeople = redis.Lists["urn:people:current"];
+				var prospectivePeople = redis.Lists["urn:people:prospective"];
+
+				currentPeople.Add(
+					new People()
+					{
+						PeopleId = redis.GetNextSequence(),
+						Name = "Justin Beckwith",
+						Email = "justbe@microsoft.com",
+						CreatedAt = DateTime.UtcNow
+					}
+				);
+
+				currentPeople.Add(
+					new People()
+					{
+						PeopleId = redis.GetNextSequence(),
+						Name = "Sara Beckwith",
+						Email = "sara.beckwith@gmail.com",
+						CreatedAt = DateTime.UtcNow
+					}
+				);
+				
+			}
+
+
+			
 			return View();
 		}
 		#endregion
@@ -198,5 +241,6 @@ namespace MvcFun.Controllers
 			string response = sr.ReadToEnd().Trim();
 		}
 		#endregion
+
 	}
 }
