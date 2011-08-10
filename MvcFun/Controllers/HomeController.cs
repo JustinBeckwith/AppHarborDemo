@@ -53,24 +53,102 @@ namespace MvcFun.Controllers
 		}
 		#endregion
 
-		#region WCF
+		#region Database
 		/// <summary>
-		/// invoke the WCF service running at wcffun.apphb.com/service1.svc
+		/// 
 		/// </summary>
 		/// <returns></returns>
-		public ActionResult WCF()
+		public ActionResult Database()
 		{
-			//throw new Exception("Waving my arms about wildly!");
-			ViewBag.where = ConfigurationManager.AppSettings["where"];
-			
-			IService1 svc = new Service1Client();						
-			string result = svc.GetData(23);
+			var clearAll = false;
 
-			ViewBag.data = result;			
+			#region Mongo
+
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
+
+			// connect to MONGO HQ out in the cloud
+			var connectionString = ConfigurationManager.AppSettings["MONGOHQ_URL"];
+			var database = MongoDatabase.Create(connectionString);
+			var collection = database.GetCollection<Person>("People");
+
+			// debug point to clear data
+			if (clearAll)
+				collection.RemoveAll();
+
+			// if this is the first run populate the table
+			if (collection.Count() == 0)
+				collection.InsertBatch(this.GetPeople());
+
+			// query all people from the table
+			var people = collection.FindAll().ToList();
+
+			sw.Stop();
+			ViewBag.MongoTime = sw.ElapsedMilliseconds;
+			ViewBag.MongoData = people;
+
+			#endregion
+
+			#region Redis
+
+			sw = new Stopwatch();
+			sw.Start();
+
+			using (var redis = Globals.RedisClient.GetTypedClient<Person>())
+			{
+				// get a reference to the current-people structure
+				var currentPeople = redis.Lists["urn:people:current"];
+
+				// debug point to clear data
+				if (clearAll)
+					currentPeople.RemoveAll();
+
+				// if this is a the first run populate the table
+				if (currentPeople.Count == 0)
+					currentPeople.AddRange(this.GetPeople());
+
+				// query all people from the table
+				var cp = currentPeople.ToList();
+				sw.Stop();
+				ViewBag.RedisTime = sw.ElapsedMilliseconds;
+				ViewBag.RedisData = cp;
+			}
+			#endregion
+
+			#region SQL Server
+			sw = new Stopwatch();
+			sw.Start();
+
+			using (var db = new PersonContext())
+			{
+				// we don't have a remove-all option
+				if (clearAll)
+				{
+					foreach (Person p in db.People)
+						db.People.Remove(p);
+					db.SaveChanges();
+				}
+
+				// if this is the first run populate the table
+				if (db.People.Count() == 0)
+				{
+					foreach (Person p in this.GetPeople())
+						db.People.Add(p);
+					db.SaveChanges();
+				}
+
+				// query all people from the database
+				var dbp = db.People.ToList();
+				sw.Stop();
+				ViewBag.SQLTime = sw.ElapsedMilliseconds;
+				ViewBag.SQLData = dbp;
+			}
+
+			#endregion
 
 			return View();
 		}
-		#endregion
+		#endregion		
 
 		#region Cache
 		/// <summary>
@@ -121,36 +199,7 @@ namespace MvcFun.Controllers
 		}
 		
 		#endregion
-
-		#region DeployHook
-		/// <summary>
-		/// when a build on appharbor completes, this lets us pipe a notification via twilio to my cell phone
-		/// </summary>
-		/// <param name="notify"></param>
-		/// <returns></returns>
-		[HttpPost]
-		public ActionResult DeployHook(MvcFun.Models.Notification notify)
-		{
-
-			//{
-			//  "application": {
-			//    "name": "Foo"
-			//  }, 
-			//  "build": {
-			//    "commit": {
-			//      "id": "77d991fe61187d205f329ddf9387d118a09fadcd", 
-			//      "message": "Implement foo"
-			//    }, 
-			//    "status": "succeeded"
-			//  }
-			//}
-			
-			this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", notify.application.name, notify.build.status));
-
-			return View(notify);
-		}
-		#endregion		
-
+		
 		#region PubSub
 		/// <summary>
 		/// this sample shows how to send a message to a redis pub/sub channel
@@ -183,102 +232,53 @@ namespace MvcFun.Controllers
 
 		#endregion
 
-		#region Database
+		#region WCF
 		/// <summary>
-		/// 
+		/// invoke the WCF service running at wcffun.apphb.com/service1.svc
 		/// </summary>
 		/// <returns></returns>
-		public ActionResult Database()
+		public ActionResult WCF()
 		{
-			var clearAll = false;
+			//throw new Exception("Waving my arms about wildly!");
+			ViewBag.where = ConfigurationManager.AppSettings["where"];
 
-			#region Mongo
+			IService1 svc = new Service1Client();
+			string result = svc.GetData(23);
 
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-
-			// connect to MONGO HQ out in the cloud
-			var connectionString = ConfigurationManager.AppSettings["MONGOHQ_URL"];
-			var database = MongoDatabase.Create(connectionString);
-			var collection = database.GetCollection<Person>("People");
-
-			// debug point to clear data
-			if (clearAll) 
-				collection.RemoveAll();
-
-			// if this is the first run populate the table
-			if (collection.Count() == 0)			
-				collection.InsertBatch(this.GetPeople());
-			
-			// query all people from the table
-			var people = collection.FindAll().ToList();
-
-			sw.Stop();
-			ViewBag.MongoTime = sw.ElapsedMilliseconds;
-			ViewBag.MongoData = people;
-
-			#endregion
-
-			#region Redis
-
-			sw = new Stopwatch();
-			sw.Start();
-
-			using (var redis = Globals.RedisClient.GetTypedClient<Person>())
-			{	
-				// get a reference to the current-people structure
-				var currentPeople = redis.Lists["urn:people:current"];
-
-				// debug point to clear data
-				if (clearAll) 
-					currentPeople.RemoveAll();
-
-				// if this is a the first run populate the table
-				if (currentPeople.Count == 0)
-					currentPeople.AddRange(this.GetPeople());
-
-				// query all people from the table
-				var cp = currentPeople.ToList();
-				sw.Stop();
-				ViewBag.RedisTime = sw.ElapsedMilliseconds;
-				ViewBag.RedisData = cp;
-			}
-			#endregion
-
-			#region SQL Server
-			sw = new Stopwatch();
-			sw.Start();
-			
-			using (var db = new PersonContext())
-			{
-				// we don't have a remove-all option
-				if (clearAll)
-				{
-					foreach (Person p in db.People) 
-						db.People.Remove(p);
-					db.SaveChanges();
-				}
-
-				// if this is the first run populate the table
-				if (db.People.Count() == 0)
-				{
-					foreach (Person p in this.GetPeople()) 
-						db.People.Add(p);
-					db.SaveChanges();
-				}
-				
-				// query all people from the database
-				var dbp = db.People.ToList();
-				sw.Stop();
-				ViewBag.SQLTime = sw.ElapsedMilliseconds;
-				ViewBag.SQLData = dbp;
-			}						
-
-			#endregion
+			ViewBag.data = result;
 
 			return View();
 		}
 		#endregion
+
+		#region DeployHook
+		/// <summary>
+		/// when a build on appharbor completes, this lets us pipe a notification via twilio to my cell phone
+		/// </summary>
+		/// <param name="notify"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult DeployHook(MvcFun.Models.Notification notify)
+		{
+
+			//{
+			//  "application": {
+			//    "name": "Foo"
+			//  }, 
+			//  "build": {
+			//    "commit": {
+			//      "id": "77d991fe61187d205f329ddf9387d118a09fadcd", 
+			//      "message": "Implement foo"
+			//    }, 
+			//    "status": "succeeded"
+			//  }
+			//}
+
+			this.SendMessage(string.Format("A new build of '{0}' has been deployed!  The status was: '{1}'", notify.application.name, notify.build.status));
+
+			return View(notify);
+		}
+		#endregion		
 
 		//--------------------------------------------------------------------------
 		//
