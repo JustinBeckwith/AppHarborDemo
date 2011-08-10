@@ -13,31 +13,44 @@ Appharbor offers many flavors of database.  Their SQL Server implementation is u
 	<table>
 		<tr>
 			<td valign="top">			
-				<h3>Mongo Document</h3>
-				Load Time: @ViewBag.MongoTime ms
-				<ul> 
-					@foreach (MvcFun.Models.Person p in ViewBag.MongoData) {
-						<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
-					}
-				</ul>			
+				<h3>Mongo Document</h3>				
+				@if (ViewBag.MongoData == null) {
+					<span style="color: Red; font-weight: bold;">@ViewBag.MongoError</span>
+				} else {												
+					<span>Load Time: @ViewBag.MongoTime ms</span>
+					<ul> 
+						@foreach (MvcFun.Models.Person p in ViewBag.MongoData) {
+							<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
+						}
+					</ul>			
+				}
+				
 			</td>
-			<td valign="top">			
+			<td valign="top">	
 				<h3>Redis Set</h3>
-				Load Time: @ViewBag.RedisTime ms
-				<ul> 
-					@foreach (MvcFun.Models.Person p in ViewBag.RedisData) {
-						<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
-					}
-				</ul>			
+				@if (ViewBag.RedisData == null) {
+					<span style="color: Red; font-weight: bold;">@ViewBag.RedisError</span>
+				} else {							
+					<span>Load Time: @ViewBag.RedisTime ms</span>
+					<ul> 
+						@foreach (MvcFun.Models.Person p in ViewBag.RedisData) {
+							<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
+						}
+					</ul>			
+				}
 			</td>
 			<td valign="top">			
 				<h3>SQL Server Table</h3>
-				Load Time: @ViewBag.SQLTime ms
-				<ul> 
-					@foreach (MvcFun.Models.Person p in ViewBag.SQLData) {
-						<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
-					}
-				</ul>			
+				@if (ViewBag.SQLData == null) {
+					<span style="color: Red; font-weight: bold;">@ViewBag.SQLError</span>
+				} else {
+					<span>Load Time: @ViewBag.SQLTime ms</span>
+					<ul> 
+						@foreach (MvcFun.Models.Person p in ViewBag.SQLData) {
+							<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
+						}
+					</ul>		
+				}	
 			</td>
 		</tr>
 	</table>

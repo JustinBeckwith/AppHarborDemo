@@ -67,25 +67,34 @@ namespace MvcFun.Controllers
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 
-			// connect to MONGO HQ out in the cloud
-			var connectionString = ConfigurationManager.AppSettings["MONGOHQ_URL"];
-			var database = MongoDatabase.Create(connectionString);
-			var collection = database.GetCollection<Person>("People");
+			try
+			{
 
-			// debug point to clear data
-			if (clearAll)
-				collection.RemoveAll();
+				// connect to MONGO HQ out in the cloud
+				var connectionString = ConfigurationManager.AppSettings["MONGOHQ_URL"];
+				var database = MongoDatabase.Create(connectionString);
+				var collection = database.GetCollection<Person>("People");
 
-			// if this is the first run populate the table
-			if (collection.Count() == 0)
-				collection.InsertBatch(this.GetPeople());
+				// debug point to clear data
+				if (clearAll)
+					collection.RemoveAll();
 
-			// query all people from the table
-			var people = collection.FindAll().ToList();
+				// if this is the first run populate the table
+				if (collection.Count() == 0)
+					collection.InsertBatch(this.GetPeople());
 
-			sw.Stop();
-			ViewBag.MongoTime = sw.ElapsedMilliseconds;
-			ViewBag.MongoData = people;
+				// query all people from the table
+				var people = collection.FindAll().ToList();
+
+				sw.Stop();
+				ViewBag.MongoTime = sw.ElapsedMilliseconds;
+				ViewBag.MongoData = people;
+			}
+			catch (Exception ex)
+			{
+				ViewBag.MongoError = "There was an error contacting MongoHQ: " + ex.ToString();
+			}
+
 
 			#endregion
 
@@ -94,54 +103,71 @@ namespace MvcFun.Controllers
 			sw = new Stopwatch();
 			sw.Start();
 
-			using (var redis = Globals.RedisClient.GetTypedClient<Person>())
+			try
 			{
-				// get a reference to the current-people structure
-				var currentPeople = redis.Lists["urn:people:current"];
+				using (var redis = Globals.RedisClient.GetTypedClient<Person>())
+				{
+					// get a reference to the current-people structure
+					var currentPeople = redis.Lists["urn:people:current"];
 
-				// debug point to clear data
-				if (clearAll)
-					currentPeople.RemoveAll();
+					// debug point to clear data
+					if (clearAll)
+						currentPeople.RemoveAll();
 
-				// if this is a the first run populate the table
-				if (currentPeople.Count == 0)
-					currentPeople.AddRange(this.GetPeople());
+					// if this is a the first run populate the table
+					if (currentPeople.Count == 0)
+						currentPeople.AddRange(this.GetPeople());
 
-				// query all people from the table
-				var cp = currentPeople.ToList();
-				sw.Stop();
-				ViewBag.RedisTime = sw.ElapsedMilliseconds;
-				ViewBag.RedisData = cp;
+					// query all people from the table
+					var cp = currentPeople.ToList();
+					sw.Stop();
+					ViewBag.RedisTime = sw.ElapsedMilliseconds;
+					ViewBag.RedisData = cp;
+				}
 			}
+			catch (Exception ex)
+			{
+				ViewBag.RedisError = "There was an error contacting Redis To Go: " + ex.ToString();
+			}
+
 			#endregion
 
 			#region SQL Server
+
 			sw = new Stopwatch();
 			sw.Start();
 
-			using (var db = new PersonContext())
+			try
 			{
-				// we don't have a remove-all option
-				if (clearAll)
-				{
-					foreach (Person p in db.People)
-						db.People.Remove(p);
-					db.SaveChanges();
-				}
 
-				// if this is the first run populate the table
-				if (db.People.Count() == 0)
+				using (var db = new PersonContext())
 				{
-					foreach (Person p in this.GetPeople())
-						db.People.Add(p);
-					db.SaveChanges();
-				}
+					// we don't have a remove-all option
+					if (clearAll)
+					{
+						foreach (Person p in db.People)
+							db.People.Remove(p);
+						db.SaveChanges();
+					}
 
-				// query all people from the database
-				var dbp = db.People.ToList();
-				sw.Stop();
-				ViewBag.SQLTime = sw.ElapsedMilliseconds;
-				ViewBag.SQLData = dbp;
+					// if this is the first run populate the table
+					if (db.People.Count() == 0)
+					{
+						foreach (Person p in this.GetPeople())
+							db.People.Add(p);
+						db.SaveChanges();
+					}
+
+					// query all people from the database
+					var dbp = db.People.ToList();
+					sw.Stop();
+					ViewBag.SQLTime = sw.ElapsedMilliseconds;
+					ViewBag.SQLData = dbp;
+				}
+			}
+			catch (Exception ex)
+			{
+				ViewBag.SQLError = "There was an error contacting SQL Server: " + ex.ToString();
 			}
 
 			#endregion
@@ -157,7 +183,7 @@ namespace MvcFun.Controllers
 		/// <returns></returns>
 		public ActionResult Cache()
 		{
-			object cacheData;
+			object cacheData = null;
 
 			/*
 			 *  load and store the data using memcahced
@@ -165,27 +191,33 @@ namespace MvcFun.Controllers
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 
-			var x = Globals.Cache;
+			try
+			{
 
-			if (!Globals.Cache.TryGet("People", out cacheData))
-			{
-				// videos aren't in the cache - load them from the db
-				ViewBag.CacheHit = false;
-				using (var db = new PersonContext())
+				if (!Globals.Cache.TryGet("People", out cacheData))
 				{
-					cacheData = db.People.ToList();
-				}				
-				var suc = Globals.Cache.Store(StoreMode.Add, "People", cacheData);
+					// videos aren't in the cache - load them from the db
+					ViewBag.CacheHit = false;
+					using (var db = new PersonContext())
+					{
+						cacheData = db.People.ToList();
+					}
+					var suc = Globals.Cache.Store(StoreMode.Add, "People", cacheData);
+				}
+				else
+				{
+					// video
+					ViewBag.CacheHit = true;
+				}
 			}
-			else
+			catch (Exception ex)
 			{
-				// video
-				ViewBag.CacheHit = true;
+				ViewBag.Message = "There was an error contacting the cache: " + ex.ToString();
 			}
 
 			sw.Stop();
 
-			ViewBag.TimeToLoad = sw.ElapsedTicks;
+			ViewBag.TimeToLoad = sw.ElapsedMilliseconds;
 
 
 			return View(cacheData);
