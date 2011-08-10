@@ -33,6 +33,10 @@ namespace MvcFun
 		{
 			AreaRegistration.RegisterAllAreas();
 
+
+
+
+
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
 		}

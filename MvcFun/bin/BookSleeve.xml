@@ -1,0 +1,642 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BookSleeve</name>
+    </assembly>
+    <members>
+        <member name="T:BookSleeve.RedisConnectionBase">
+            <summary>
+            Base class for a redis-connection; provides core redis services
+            </summary>
+        </member>
+        <member name="F:BookSleeve.RedisConnectionBase.DefaultSyncTimeout">
+            <summary>
+            The default time to wait for individual commands to complete when using Wait
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.GetCounterValues(System.Int32@,System.Int32@,System.Int32@,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Obtains fresh statistics on the usage of the connection
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.Ping(System.Boolean)">
+            <summary>
+            Issues a basic ping/pong pair against the server, returning the latency
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.Dispose">
+            <summary>
+            Releases any resources associated with the connection
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.OnOpened">
+            <summary>
+            Called after opening a connection
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.OnOpening">
+            <summary>
+            Called before opening a connection
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.Open">
+            <summary>
+            Attempts to open the connection to the remote server
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.ShuttingDown(System.Exception)">
+            <summary>
+            Invoked when the server is terminating
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.Wait``1(System.Threading.Tasks.Task{``0})">
+            <summary>
+            If the task is not yet completed, blocks the caller until completion up to a maximum of SyncTimeout milliseconds.
+            Once a task is completed, the result is returned.
+            </summary>
+            <param name="task">The task to wait on</param>
+            <returns>The return value of the task.</returns>
+            <exception cref="T:System.TimeoutException">If SyncTimeout milliseconds is exceeded.</exception>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.Wait(System.Threading.Tasks.Task)">
+            <summary>
+            If the task is not yet completed, blocks the caller until completion up to a maximum of SyncTimeout milliseconds.
+            </summary>
+            <param name="task">The task to wait on</param>
+            <exception cref="T:System.TimeoutException">If SyncTimeout milliseconds is exceeded.</exception>
+            <remarks>If an exception is throw, it is extracted from the AggregateException (unless multiple exceptions are found)</remarks>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.WaitAll(System.Threading.Tasks.Task[])">
+            <summary>
+            Waits for all of a set of tasks to complete, up to a maximum of SyncTimeout milliseconds.
+            </summary>
+            <param name="tasks">The tasks to wait on</param>
+            <exception cref="T:System.TimeoutException">If SyncTimeout milliseconds is exceeded.</exception>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.WaitAny(System.Threading.Tasks.Task[])">
+            <summary>
+            Waits for any of a set of tasks to complete, up to a maximum of SyncTimeout milliseconds.
+            </summary>
+            <param name="tasks">The tasks to wait on</param>
+            <returns>The index of a completed task</returns>
+            <exception cref="T:System.TimeoutException">If SyncTimeout milliseconds is exceeded.</exception>        
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.ContinueWith``1(System.Threading.Tasks.Task{``0},System.Action{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Add a continuation (a callback), to be executed once a task has completed
+            </summary>
+            <param name="task">The task to add a continuation to</param>
+            <param name="action">The continuation to perform once completed</param>
+            <returns>A new task representing the composed operation</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnectionBase.ContinueWith(System.Threading.Tasks.Task,System.Action{System.Threading.Tasks.Task})">
+            <summary>
+            Add a continuation (a callback), to be executed once a task has completed
+            </summary>
+            <param name="task">The task to add a continuation to</param>
+            <param name="action">The continuation to perform once completed</param>
+            <returns>A new task representing the composed operation</returns>
+        </member>
+        <member name="P:BookSleeve.RedisConnectionBase.SyncTimeout">
+            <summary>
+            The amount of time to wait for any individual command to return a result when using Wait
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisConnectionBase.Host">
+            <summary>
+            The host for the redis server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisConnectionBase.Password">
+            <summary>
+            The password used to authenticate with the redis server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisConnectionBase.Port">
+            <summary>
+            The port for the redis server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisConnectionBase.IOTimeout">
+            <summary>
+            The IO timeout to use when communicating with the redis server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisConnectionBase.Features">
+            <summary>
+            Features available to the redis server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisConnectionBase.ServerVersion">
+            <summary>
+            The version of the connected redis server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisConnectionBase.State">
+            <summary>
+            The current state of the connection
+            </summary>
+        </member>
+        <member name="T:BookSleeve.BlockingQueue`1">
+            <summary>
+            Implements a thread-safe queue for use in a producer/consumer scenario
+            </summary>
+            <remarks> This is based on http://stackoverflow.com/questions/530211/creating-a-blocking-queuet-in-net/530228#530228 </remarks>
+        </member>
+        <member name="T:BookSleeve.RedisException">
+            <summary>
+            An redis-related exception; this could represent a message from the server,
+            or a protocol error talking to the server.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisException.#ctor">
+            <summary>
+            Create a new RedisException
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisException.#ctor(System.String)">
+            <summary>
+            Create a new RedisException
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisException.#ctor(System.String,System.Exception)">
+            <summary>
+            Create a new RedisException
+            </summary>
+        </member>
+        <member name="T:BookSleeve.RedisFeatures">
+            <summary>
+            Provides basic information about the features available on a particular version of Redis
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisFeatures.#ctor(System.Version)">
+            <summary>
+            Create a new RedisFeatures instance for the given version
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisFeatures.ToString">
+            <summary>
+            Create a string representation of the available features
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisFeatures.Version">
+            <summary>
+            The Redis version of the server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisFeatures.Persist">
+            <summary>
+            Is the PERSIST operation supported?
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisFeatures.ExpireOverwrite">
+            <summary>
+            Can EXPIRE be used to set expiration on a key that is already volatile (i.e. has an expiration)?
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisFeatures.HashVaradicDelete">
+            <summary>
+            Does HDEL support varadic usage?
+            </summary>
+        </member>
+        <member name="T:BookSleeve.ErrorEventArgs">
+            <summary>
+            Event data relating to an exception in Redis
+            </summary>
+        </member>
+        <member name="P:BookSleeve.ErrorEventArgs.Exception">
+            <summary>
+            The exception that occurred
+            </summary>
+        </member>
+        <member name="P:BookSleeve.ErrorEventArgs.Cause">
+            <summary>
+            What the system was doing when this error occurred
+            </summary>
+        </member>
+        <member name="P:BookSleeve.ErrorEventArgs.IsFatal">
+            <summary>
+            True if this error has rendered the connection unusable
+            </summary>
+        </member>
+        <member name="T:BookSleeve.RedisSubscriberConnection">
+            <summary>
+            Provides a Redis connection for listening for (and handling) the subscriber part of a pub/sub implementation.
+            Messages are sent using RedisConnection.Publish.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisSubscriberConnection.#ctor(System.String,System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            Create a new RedisSubscriberConnection instance
+            </summary>
+            <param name="host">The server to connect to (IP address or name)</param>
+            <param name="port">The port on the server to connect to; typically 3679</param>
+            <param name="ioTimeout">The timeout to use during IO operations; this can usually be left unlimited</param>
+            <param name="password">If the server is secured, the server password (null if not secured)</param>
+            <param name="maxUnsent">The maximum number of unsent messages to enqueue before new requests are blocking calls</param>
+        </member>
+        <member name="M:BookSleeve.RedisSubscriberConnection.Subscribe(System.String,System.Action{System.String,System.Byte[]})">
+            <summary>
+            Subscribe to a channel
+            </summary>
+            <param name="key">The channel name</param>
+            <param name="handler">A callback to invoke when messages are received on this channel;
+            note that the MessageReceived event will also be raised, so this callback can be null.</param>
+            <remarks>Channels are server-wide; they are not per-database</remarks>
+        </member>
+        <member name="M:BookSleeve.RedisSubscriberConnection.Subscribe(System.String[],System.Action{System.String,System.Byte[]})">
+            <summary>
+            Subscribe to a set of channels
+            </summary>
+            <param name="keys">The channel names</param>
+            <param name="handler">A callback to invoke when messages are received on these channel;
+            note that the MessageReceived event will also be raised, so this callback can be null.</param>
+            <remarks>Channels are server-wide; they are not per-database</remarks>
+        </member>
+        <member name="M:BookSleeve.RedisSubscriberConnection.PatternSubscribe(System.String,System.Action{System.String,System.Byte[]})">
+            <summary>
+            Subscribe to a set of pattern (using wildcards, for exmaple "Foo*")
+            </summary>
+            <param name="key">The pattern to subscribe</param>
+            <param name="handler">A callback to invoke when matching messages are received; this can be null
+            as the MessageReceived event will also be raised</param>
+            <remarks>Channels are server-wide, not per-database</remarks>        
+        </member>
+        <member name="M:BookSleeve.RedisSubscriberConnection.PatternSubscribe(System.String[],System.Action{System.String,System.Byte[]})">
+            <summary>
+            Subscribe to a set of patterns (using wildcards, for exmaple "Foo*")
+            </summary>
+            <param name="keys">The patterns to subscribe</param>
+            <param name="handler">A callback to invoke when matching messages are received; this can be null
+            as the MessageReceived event will also be raised</param>
+            <remarks>Channels are server-wide, not per-database</remarks>
+        </member>
+        <member name="M:BookSleeve.RedisSubscriberConnection.Unsubscribe(System.String)">
+            <summary>
+            Unsubscribe from a channel
+            </summary>
+            <param name="key">The channel name</param>
+            <remarks>Channels are server-wide; they are not per-database</remarks>
+        </member>
+        <member name="M:BookSleeve.RedisSubscriberConnection.Unsubscribe(System.String[])">
+            <summary>
+            Unsubscribe from a set of channels
+            </summary>
+            <param name="keys">The channel names</param>
+            <remarks>Channels are server-wide; they are not per-database</remarks>
+        </member>
+        <member name="M:BookSleeve.RedisSubscriberConnection.PatternUnsubscribe(System.String)">
+            <summary>
+            Unsubscribe from a pattern (which must match a pattern previously subscribed)
+            </summary>
+            <param name="key">The pattern to unsubscribe</param>
+            <remarks>Channels are server-wide, not per-database</remarks>
+        </member>
+        <member name="M:BookSleeve.RedisSubscriberConnection.PatternUnsubscribe(System.String[])">
+            <summary>
+            Unsubscribe from a set of patterns (which must match patterns previously subscribed)
+            </summary>
+            <param name="keys">The patterns to unsubscribe</param>
+            <remarks>Channels are server-wide, not per-database</remarks>
+        </member>
+        <member name="E:BookSleeve.RedisSubscriberConnection.MessageReceived">
+            <summary>
+            This event is raised when a message is received on any subscribed channel; this is supplemental
+            to any direct callbacks specified.
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisSubscriberConnection.SubscriptionCount">
+            <summary>
+            The number of subscriptions currently help by the current connection (as reported by the server during the last
+            subsribe/unsubscribe operation)
+            </summary>
+        </member>
+        <member name="T:BookSleeve.Counters">
+            <summary>
+            Summary statistics for the RedisConnection
+            </summary>
+        </member>
+        <member name="M:BookSleeve.Counters.ToString">
+            <summary>
+            Obtain a string representation of the counters
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:BookSleeve.Counters.MessagesSent">
+            <summary>
+            The number of messages sent to the Redis server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.Counters.MessagesReceived">
+            <summary>
+            The number of messages received from the Redis server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.Counters.MessagesCancelled">
+            <summary>
+            The number of queued messages that were withdrawn without being sent
+            </summary>
+        </member>
+        <member name="P:BookSleeve.Counters.Timeouts">
+            <summary>
+            The number of operations that timed out
+            </summary>
+        </member>
+        <member name="P:BookSleeve.Counters.QueueJumpers">
+            <summary>
+            The number of operations that were sent ahead of queued items
+            </summary>
+        </member>
+        <member name="P:BookSleeve.Counters.UnsentQueue">
+            <summary>
+            The number of messages waiting to be sent
+            </summary>
+        </member>
+        <member name="P:BookSleeve.Counters.ErrorMessages">
+            <summary>
+            The number of error messages received by the server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.Counters.SentQueue">
+            <summary>
+            The number of messages that have been sent and are waiting for a response</summary>
+        </member>
+        <member name="P:BookSleeve.Counters.Ping">
+            <summary>
+            The current time (milliseconds) taken to send a Redis PING command and
+            receive a PONG reply
+            </summary>
+        </member>
+        <member name="T:BookSleeve.RedisConnection">
+            <summary>
+            A thread-safe, multiplexed connection to a Redis server; each connection
+            should be cached and re-used (without synchronization) from multiple
+            callers for maximum efficiency. Usually only a single RedisConnection
+            is required
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.#ctor(System.String,System.Int32,System.Int32,System.String,System.Int32,System.Boolean,System.Int32)">
+            <summary>
+            Creates a new RedisConnection to a designated server
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.#ctor(BookSleeve.RedisConnection)">
+            <summary>
+            Creates a child RedisConnection, such as for a RedisTransaction
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.CreateTransaction">
+            <summary>
+            Allows multiple commands to be buffered and sent to redis as a single atomic unit
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetOpenSubscriberChannel">
+            <summary>
+            Creates a pub/sub connection to the same redis server
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.Dispose">
+            <summary>
+            Releases any resources associated with the connection
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.ShuttingDown(System.Exception)">
+            <summary>
+            Invoked when the server is terminating
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetCounters">
+            <summary>
+            Query usage metrics for this connection
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.OnOpened">
+            <summary>
+            Called after opening a connection
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.Persist(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Removes the expiry against a key
+            </summary>
+            <returns>True if the expiry was removed (it existed with expiry), else False</returns>
+            <remarks>Available with 2.1.2 and above only</remarks>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.RandomKey(System.Int32,System.Boolean)">
+            <summary>
+            Obtains a random key from the database, or null otherwise (empty database)
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.Rename(System.Int32,System.String,System.String,System.Boolean)">
+            <summary>
+            Renames a key in the database, overwriting any existing value; the source key must exist and be different to the destination.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.RenameIfNotExists(System.Int32,System.String,System.String,System.Boolean)">
+            <summary>
+            Renames a key in the database, overwriting any existing value; the source key must exist and be different to the destination.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.LeftPush(System.Int32,System.String,System.Byte[],System.Boolean)">
+            <summary>
+            Prepend an item to a list
+            </summary>
+            <param name="db">The database to operate on</param>
+            <param name="key">The key of the list</param>
+            <param name="value">The item to add</param>
+            <param name="queueJump">Whether to overtake unsent messages</param>
+            <returns>The number of items now in the list</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.RightPush(System.Int32,System.String,System.Byte[],System.Boolean)">
+            <summary>
+            Append an item to a list
+            </summary>
+            <param name="db">The database to operate on</param>
+            <param name="key">The key of the list</param>
+            <param name="value">The item to add</param>
+            <param name="queueJump">Whether to overtake unsent messages</param>
+            <returns>The number of items now in the list</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.ListLength(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Query the number of items in a list
+            </summary>
+            <param name="db">The database to operate on</param>
+            <param name="key">The key of the list</param>
+            <param name="queueJump">Whether to overtake unsent messages</param>
+            <returns>The number of items in the list, or 0 if it does not exist</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.Remove(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Removes a key from the database.</summary>
+            <returns>True if the key was successfully removed, false otherwise (i.e. it didn't exist)</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.Remove(System.Int32,System.String[],System.Boolean)">
+            <summary>
+            Removes multiple keys from the database.</summary>
+            <returns>The number of keys successfully removed (i.e. that existed)</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.LeftPop(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Removes an item from the start of a list
+            </summary>
+            <param name="db">The database to operatate on</param>
+            <param name="key">The list to remove an item from</param>
+            <param name="queueJump">Whether to overtake unsent messages</param>
+            <returns>The contents of the item removed, or null if empty</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.RightPop(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Removes an item from the end of a list
+            </summary>
+            <param name="db">The database to operatate on</param>
+            <param name="key">The list to remove an item from</param>
+            <param name="queueJump">Whether to overtake unsent messages</param>
+            <returns>The contents of the item removed, or null if empty</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.Move(System.Int32,System.String,System.Int32)">
+            <summary>
+            Moves a key between databases; the key must exist at the source and not exist at the destination.
+            </summary>
+            <returns>True if successful; false otherwise (didn't exist at source, or already existed at destination).</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetHash(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Enumerate all keys in a hash.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetHashPairs(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Returns all fields and values of the hash stored at key.
+            </summary>
+            <returns>list of fields and their values stored in the hash, or an empty list when key does not exist.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.IncrementHash(System.Int32,System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+            Increment a field on a hash by an amount (1 by default)
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.SetHash(System.Int32,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Sets field in the hash stored at key to value. If key does not exist, a new key holding a hash is created. If field already exists in the hash, it is overwritten.
+            </summary>
+            /// <returns>1 if field is a new field in the hash and value was set. 0 if field already exists in the hash and the value was updated.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.SetHash(System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.Byte[]},System.Boolean)">
+            <summary>
+            Sets the specified fields to their respective values in the hash stored at key. This command overwrites any existing fields in the hash. If key does not exist, a new key holding a hash is created.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.SetHash(System.Int32,System.String,System.String,System.Byte[],System.Boolean)">
+            <summary>
+            Sets field in the hash stored at key to value. If key does not exist, a new key holding a hash is created. If field already exists in the hash, it is overwritten.
+            </summary>
+            <returns>1 if field is a new field in the hash and value was set. 0 if field already exists in the hash and the value was updated.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.SetHashIfNotExists(System.Int32,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Sets field in the hash stored at key to value, only if field does not yet exist. If key does not exist, a new key holding a hash is created. If field already exists, this operation has no effect.
+            </summary>
+            <returns>1 if field is a new field in the hash and value was set. 0 if field already exists in the hash and no operation was performed.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.SetHashIfNotExists(System.Int32,System.String,System.String,System.Byte[],System.Boolean)">
+            <summary>
+            Sets field in the hash stored at key to value, only if field does not yet exist. If key does not exist, a new key holding a hash is created. If field already exists, this operation has no effect.
+            </summary>
+            <returns>1 if field is a new field in the hash and value was set. 0 if field already exists in the hash and no operation was performed.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetFromHashString(System.Int32,System.String,System.String,System.Boolean)">
+            <summary>
+            Returns the value associated with field in the hash stored at key.
+            </summary>
+            <returns>the value associated with field, or nil when field is not present in the hash or key does not exist.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetFromHash(System.Int32,System.String,System.String,System.Boolean)">
+            <summary>
+            Returns the value associated with field in the hash stored at key.
+            </summary>
+            <returns>the value associated with field, or nil when field is not present in the hash or key does not exist.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetFromHashString(System.Int32,System.String,System.String[],System.Boolean)">
+            <summary>
+            Returns the values associated with the specified fields in the hash stored at key. For every field that does not exist in the hash, a nil value is returned.
+            </summary>
+            <returns>list of values associated with the given fields, in the same order as they are requested.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetFromHash(System.Int32,System.String,System.String[],System.Boolean)">
+            <summary>
+            Returns the values associated with the specified fields in the hash stored at key. For every field that does not exist in the hash, a nil value is returned.
+            </summary>
+            <returns>list of values associated with the given fields, in the same order as they are requested.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.RemoveHash(System.Int32,System.String,System.String,System.Boolean)">
+            <summary>
+            Removes the specified field from the hash stored at key. Non-existing fields are ignored. Non-existing keys are treated as empty hashes and this command returns 0.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.RemoveHash(System.Int32,System.String,System.String[],System.Boolean)">
+            <summary>
+            Removes the specified fields from the hash stored at key. Non-existing fields are ignored. Non-existing keys are treated as empty hashes and this command returns 0.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.ContainsHash(System.Int32,System.String,System.String,System.Boolean)">
+            <summary>
+            Returns if field is an existing field in the hash stored at key.
+            </summary>
+            <returns>1 if the hash contains field. 0 if the hash does not contain field, or key does not exist.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetHashKeys(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Returns all field names in the hash stored at key.
+            </summary>
+            <returns>list of fields in the hash, or an empty list when key does not exist.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetHashValues(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Returns all values in the hash stored at key.
+            </summary>
+            <returns> list of values in the hash, or an empty list when key does not exist.</returns>
+        </member>
+        <member name="M:BookSleeve.RedisConnection.GetHashLength(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Returns the number of fields contained in the hash stored at key.
+            </summary>
+            <returns>number of fields in the hash, or 0 when key does not exist.</returns>
+        </member>
+        <member name="T:BookSleeve.RedisTransaction">
+            <summary>
+            Represents a group of redis messages that will be sent as a single atomic 
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisTransaction.CreateTransaction">
+            <summary>
+            Not supported, as nested transactions are not available.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisTransaction.OnOpening">
+            <summary>
+            Called before opening a connection
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisTransaction.Execute(System.Boolean)">
+            <summary>
+            Sends all currently buffered commands to the redis server in a single unit; the transaction may subsequently be re-used to buffer additional blocks of commands if needed.
+            </summary>
+        </member>
+        <member name="M:BookSleeve.RedisTransaction.Discard">
+            <summary>
+            Discards any buffered commands; the transaction may subsequently be re-used to buffer additional blocks of commands if needed.
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisTransaction.Features">
+            <summary>
+            Features available to the redis server
+            </summary>
+        </member>
+        <member name="P:BookSleeve.RedisTransaction.ServerVersion">
+            <summary>
+            The version of the connected redis server
+            </summary>
+        </member>
+    </members>
+</doc>

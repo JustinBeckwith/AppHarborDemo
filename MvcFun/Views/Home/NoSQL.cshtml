@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "NoSQL";
+}
+
+<h2>NoSQL - Using MongoHQ</h2>
+
+<table>
+	<tr>
+		<td valign="top">			
+				<h3>Mongo Data</h3>
+				Load Time: @ViewBag.MongoTime
+				<ul> 
+					@foreach (MvcFun.Models.Person p in ViewBag.MongoData) {
+						<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
+					}
+				</ul>			
+		</td>
+		<td valign="top">			
+				<h3>Redis Data</h3>
+				Load Time: @ViewBag.RedisTime
+				<ul> 
+					@foreach (MvcFun.Models.Person p in ViewBag.RedisData) {
+						<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
+					}
+				</ul>			
+		</td>
+	</tr>
+</table>

@@ -7,7 +7,8 @@ using System.Configuration;
 using System.Net;
 using System.Collections.Specialized;
 using System.Diagnostics;
-
+using System.Threading;
+using System.Threading.Tasks;
 
 using MvcFun.Models;
 using MvcFun.ServiceReference1;
@@ -19,6 +20,12 @@ using Enyim.Caching.Memcached;
 
 using ServiceStack.Redis;
 using ServiceStack.Redis.Generic;
+
+using BookSleeve;
+
+using MongoDB;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace MvcFun.Controllers
 {
@@ -103,6 +110,13 @@ namespace MvcFun.Controllers
 
 			return View(cacheVideos);
 		}
+
+		[HttpPost]
+		public ActionResult Cache(FormCollection collection)
+		{
+			Globals.Cache.FlushAll();
+			return View();
+		}
 		
 		#endregion
 
@@ -142,8 +156,6 @@ namespace MvcFun.Controllers
 		/// <returns></returns>
 		public ActionResult SQLServer()
 		{
-			Globals.Cache.FlushAll();
-
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 
@@ -163,49 +175,97 @@ namespace MvcFun.Controllers
 
 		#region PubSub
 		/// <summary>
-		/// 
+		/// this sample shows how to send a message to a redis pub/sub channel
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult PubSub()
 		{
-			// get the dynamic redis host
-			var redisUrl = ConfigurationManager.AppSettings.Get("REDISTOGO_URL");
-			var redisHost = redisUrl.Substring(8, redisUrl.LastIndexOf(":")-8);
-			var redisPort = int.Parse(redisUrl.Substring(redisUrl.LastIndexOf(":")+1).Trim('/'));			
-
-			//<add key="REDISTOGO_URL" value="redis://redistogo-appharbor:553eee0ecf0a87501f5c67cb4302fc55@angler.redistogo.com:9313/" />	  
-
-			using (var redisClient = new RedisClient()) 
-			{
-				IRedisTypedClient<People> redis = redisClient.GetTypedClient<People>();
-
-				var currentPeople = redis.Lists["urn:people:current"];
-				var prospectivePeople = redis.Lists["urn:people:prospective"];
-
-				currentPeople.Add(
-					new People()
-					{
-						PeopleId = redis.GetNextSequence(),
-						Name = "Justin Beckwith",
-						Email = "justbe@microsoft.com",
-						CreatedAt = DateTime.UtcNow
-					}
-				);
-
-				currentPeople.Add(
-					new People()
-					{
-						PeopleId = redis.GetNextSequence(),
-						Name = "Sara Beckwith",
-						Email = "sara.beckwith@gmail.com",
-						CreatedAt = DateTime.UtcNow
-					}
-				);
-				
-			}
-
-
 			
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult PubSub(FormCollection collection)
+		{
+			// the channel name needs to be the same on both ends
+			const string ChannelName = "CHANNEL";
+			const string ClientId = "AppHarbor MVC";
+			
+			// create a new redis client
+			using (var redisPublisher = Globals.CreateRedisClient())
+			{
+				// publish the message to the "CHANNEL" channel
+				var message = string.Format("{0}: {1}", ClientId, collection["message"]);					
+				redisPublisher.PublishMessage(ChannelName, message);				
+			}
+			ViewBag.Message = "Message sent to queue";
+
+			return View();
+		}
+
+		#endregion
+
+		#region NoSQL
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult NoSQL()
+		{			
+			#region Mongo
+
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
+
+			// connect to MONGO HQ out in the cloud
+			var connectionString = ConfigurationManager.AppSettings["MONGOHQ_URL"];
+			var database = MongoDatabase.Create(connectionString);
+			var collection = database.GetCollection<Person>("People");
+
+			// debug point to clear data
+			if (false) 
+				collection.RemoveAll();
+
+			// if this is the first run populate the table
+			if (collection.Count() == 0)			
+				collection.InsertBatch(this.GetPeople());
+			
+			// query all people from the table
+			var people = collection.FindAll().ToList();
+
+			sw.Stop();
+			ViewBag.MongoTime = sw.ElapsedTicks;
+			ViewBag.MongoData = people;
+
+			#endregion
+
+
+			#region Redis
+
+			sw = new Stopwatch();
+			sw.Start();
+
+			using (var redis = Globals.RedisClient.GetTypedClient<Person>())
+			{	
+				// get a reference to the current-people structure
+				var currentPeople = redis.Lists["urn:people:current"];
+
+				// debug point to clear data
+				if (false) 
+					currentPeople.RemoveAll();
+
+				// if this is a the first run populate the table
+				if (currentPeople.Count == 0)
+					currentPeople.AddRange(this.GetPeople());
+
+				// query all people from the table
+				var cp = currentPeople.ToList();
+				sw.Stop();
+				ViewBag.RedisTime = sw.ElapsedTicks;
+				ViewBag.RedisData = cp;
+			}
+			#endregion
+
 			return View();
 		}
 		#endregion
@@ -242,6 +302,60 @@ namespace MvcFun.Controllers
 			System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
 			string response = sr.ReadToEnd().Trim();
 		}
+		#endregion
+
+		#region GetPeople
+		/// <summary>
+		/// gets a list of people to seed a database
+		/// </summary>
+		/// <returns></returns>
+		protected IList<Person> GetPeople()
+		{
+			var people = new List<Person>();
+
+			people.Add(
+						new Person()
+						{
+							Id = Guid.NewGuid(),
+							Name = "Justin Beckwith",
+							Email = "justbe@microsoft.com",
+							CreatedAt = DateTime.UtcNow
+						}
+					);
+
+			people.Add(
+				new Person()
+				{
+					Id = Guid.NewGuid(),
+					Name = "Vignan Pattamatta",
+					Email = "vignanp@microsoft.com",
+					CreatedAt = DateTime.UtcNow
+				}
+			);
+
+			people.Add(
+				new Person()
+				{
+					Id = Guid.NewGuid(),
+					Name = "Adam Abdelhamed",
+					Email = "adam.abdelhamed@microsoft.com",
+					CreatedAt = DateTime.UtcNow
+				}
+			);
+
+			people.Add(
+				new Person()
+				{
+					Id = Guid.NewGuid(),
+					Name = "Vikram Desai",
+					Email = "vikdesai@microsoft.com",
+					CreatedAt = DateTime.UtcNow
+				}
+			);
+
+			return people;
+		}
+
 		#endregion
 
 	}

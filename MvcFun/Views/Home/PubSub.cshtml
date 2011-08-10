@@ -2,4 +2,35 @@
     ViewBag.Title = "Pub/Sub with Redis";
 }
 
-<h2>PubSub</h2>
+@section JavaScript {
+	<script type="text/javascript">
+
+		$(function () {
+			$("#message").val('');
+			setTimeout(
+				function () {
+					$('#mes').fadeOut();
+				}, 2000);
+		});
+
+	</script>
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+	This sample shows how to send a message to a redis pub/sub channel.  You may be surprised where the message ends up.
+</div>
+<br />
+
+@using (Html.BeginForm())
+{
+	@Html.TextBox("message")
+	<input type="submit" value="send" />
+}
+
+<br />
+
+<span style="color:red; font-weight:bold;" id="mes">
+	@ViewBag.Message
+</span>
