@@ -87,6 +87,8 @@ namespace MvcFun.Controllers
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 
+			var x = Globals.Cache;
+
 			if (!Globals.Cache.TryGet("People", out cacheData))
 			{
 				// videos aren't in the cache - load them from the db
@@ -94,8 +96,8 @@ namespace MvcFun.Controllers
 				using (var db = new PersonContext())
 				{
 					cacheData = db.People.ToList();
-				}
-				Globals.Cache.Store(StoreMode.Set, "People", cacheData);
+				}				
+				var suc = Globals.Cache.Store(StoreMode.Add, "People", cacheData);
 			}
 			else
 			{
