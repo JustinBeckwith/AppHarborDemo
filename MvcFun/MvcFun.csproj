@@ -116,14 +116,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Globals.cs" />
-    <Compile Include="Models\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\PersonContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\ServiceReference1\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -170,10 +166,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <None Include="Service References\ServiceReference1\MvcFun.ServiceReference1.CompositeType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -213,14 +205,13 @@
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Home\SQLServer.cshtml" />
     <None Include="Service References\ServiceReference1\Service12.xsd">
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Home\DeployHook.cshtml" />
     <Content Include="Views\Home\Cache.cshtml" />
     <Content Include="Views\Home\PubSub.cshtml" />
-    <Content Include="Views\Home\NoSQL.cshtml" />
+    <Content Include="Views\Home\Database.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

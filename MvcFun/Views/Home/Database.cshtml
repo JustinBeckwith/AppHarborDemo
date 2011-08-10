@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Database Examples";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<br />
+Appharbor offers many flavors of database.  Their SQL Server implementation is using shared databases running inside of their infrastructure.  Redis is offered as a 3rd party service using Redis To Go, and Mongo is offered through the 3rd party service MongoHQ.
+<br />
+<br />
+
+<div class="text-align: center;">
+	<table>
+		<tr>
+			<td valign="top">			
+				<h3>Mongo Document</h3>
+				Load Time: @ViewBag.MongoTime ms
+				<ul> 
+					@foreach (MvcFun.Models.Person p in ViewBag.MongoData) {
+						<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
+					}
+				</ul>			
+			</td>
+			<td valign="top">			
+				<h3>Redis Set</h3>
+				Load Time: @ViewBag.RedisTime ms
+				<ul> 
+					@foreach (MvcFun.Models.Person p in ViewBag.RedisData) {
+						<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
+					}
+				</ul>			
+			</td>
+			<td valign="top">			
+				<h3>SQL Server Table</h3>
+				Load Time: @ViewBag.SQLTime ms
+				<ul> 
+					@foreach (MvcFun.Models.Person p in ViewBag.SQLData) {
+						<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
+					}
+				</ul>			
+			</td>
+		</tr>
+	</table>
+</div>

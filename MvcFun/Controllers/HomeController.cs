@@ -79,7 +79,7 @@ namespace MvcFun.Controllers
 		/// <returns></returns>
 		public ActionResult Cache()
 		{
-			object cacheVideos;
+			object cacheData;
 
 			/*
 			 *  load and store the data using memcahced
@@ -87,15 +87,15 @@ namespace MvcFun.Controllers
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 
-			if (!Globals.Cache.TryGet("Videos", out cacheVideos))
+			if (!Globals.Cache.TryGet("People", out cacheData))
 			{
 				// videos aren't in the cache - load them from the db
 				ViewBag.CacheHit = false;
-				using (var db = new db3364Entities())
+				using (var db = new PersonContext())
 				{
-					cacheVideos = db.Videos.ToList();
+					cacheData = db.People.ToList();
 				}
-				Globals.Cache.Store(StoreMode.Set, "Videos", cacheVideos);
+				Globals.Cache.Store(StoreMode.Set, "People", cacheData);
 			}
 			else
 			{
@@ -106,9 +106,9 @@ namespace MvcFun.Controllers
 			sw.Stop();
 
 			ViewBag.TimeToLoad = sw.ElapsedTicks;
-		
 
-			return View(cacheVideos);
+
+			return View(cacheData);
 		}
 
 		[HttpPost]
@@ -147,31 +147,7 @@ namespace MvcFun.Controllers
 
 			return View(notify);
 		}
-		#endregion
-
-		#region SQLServer
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		public ActionResult SQLServer()
-		{
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-
-			IList<Video> videos;
-			using (var db = new db3364Entities())
-			{
-				videos = db.Videos.ToList();
-			}
-
-			sw.Stop();
-
-			ViewBag.TimeToLoad = sw.ElapsedTicks;
-
-			return View(videos);
-		}
-		#endregion
+		#endregion		
 
 		#region PubSub
 		/// <summary>
@@ -205,13 +181,15 @@ namespace MvcFun.Controllers
 
 		#endregion
 
-		#region NoSQL
+		#region Database
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public ActionResult NoSQL()
-		{			
+		public ActionResult Database()
+		{
+			var clearAll = false;
+
 			#region Mongo
 
 			Stopwatch sw = new Stopwatch();
@@ -223,7 +201,7 @@ namespace MvcFun.Controllers
 			var collection = database.GetCollection<Person>("People");
 
 			// debug point to clear data
-			if (false) 
+			if (clearAll) 
 				collection.RemoveAll();
 
 			// if this is the first run populate the table
@@ -234,11 +212,10 @@ namespace MvcFun.Controllers
 			var people = collection.FindAll().ToList();
 
 			sw.Stop();
-			ViewBag.MongoTime = sw.ElapsedTicks;
+			ViewBag.MongoTime = sw.ElapsedMilliseconds;
 			ViewBag.MongoData = people;
 
 			#endregion
-
 
 			#region Redis
 
@@ -251,7 +228,7 @@ namespace MvcFun.Controllers
 				var currentPeople = redis.Lists["urn:people:current"];
 
 				// debug point to clear data
-				if (false) 
+				if (clearAll) 
 					currentPeople.RemoveAll();
 
 				// if this is a the first run populate the table
@@ -261,9 +238,40 @@ namespace MvcFun.Controllers
 				// query all people from the table
 				var cp = currentPeople.ToList();
 				sw.Stop();
-				ViewBag.RedisTime = sw.ElapsedTicks;
+				ViewBag.RedisTime = sw.ElapsedMilliseconds;
 				ViewBag.RedisData = cp;
 			}
+			#endregion
+
+			#region SQL Server
+			sw = new Stopwatch();
+			sw.Start();
+			
+			using (var db = new PersonContext())
+			{
+				// we don't have a remove-all option
+				if (clearAll)
+				{
+					foreach (Person p in db.People) 
+						db.People.Remove(p);
+					db.SaveChanges();
+				}
+
+				// if this is the first run populate the table
+				if (db.People.Count() == 0)
+				{
+					foreach (Person p in this.GetPeople()) 
+						db.People.Add(p);
+					db.SaveChanges();
+				}
+				
+				// query all people from the database
+				var dbp = db.People.ToList();
+				sw.Stop();
+				ViewBag.SQLTime = sw.ElapsedMilliseconds;
+				ViewBag.SQLData = dbp;
+			}						
+
 			#endregion
 
 			return View();
@@ -319,7 +327,8 @@ namespace MvcFun.Controllers
 							Id = Guid.NewGuid(),
 							Name = "Justin Beckwith",
 							Email = "justbe@microsoft.com",
-							CreatedAt = DateTime.UtcNow
+							CreatedAt = DateTime.UtcNow,
+							UpdatedAt = DateTime.UtcNow
 						}
 					);
 
@@ -329,7 +338,8 @@ namespace MvcFun.Controllers
 					Id = Guid.NewGuid(),
 					Name = "Vignan Pattamatta",
 					Email = "vignanp@microsoft.com",
-					CreatedAt = DateTime.UtcNow
+					CreatedAt = DateTime.UtcNow,
+					UpdatedAt = DateTime.UtcNow
 				}
 			);
 
@@ -339,7 +349,8 @@ namespace MvcFun.Controllers
 					Id = Guid.NewGuid(),
 					Name = "Adam Abdelhamed",
 					Email = "adam.abdelhamed@microsoft.com",
-					CreatedAt = DateTime.UtcNow
+					CreatedAt = DateTime.UtcNow,
+					UpdatedAt = DateTime.UtcNow
 				}
 			);
 
@@ -349,7 +360,8 @@ namespace MvcFun.Controllers
 					Id = Guid.NewGuid(),
 					Name = "Vikram Desai",
 					Email = "vikdesai@microsoft.com",
-					CreatedAt = DateTime.UtcNow
+					CreatedAt = DateTime.UtcNow,
+					UpdatedAt = DateTime.UtcNow
 				}
 			);
 
