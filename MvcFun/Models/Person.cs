@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace MvcFun.Models
+namespace MvcFun.Models.POCO
 {
 	public class Person
 	{		

@@ -23,7 +23,7 @@ Memcacher provides AppHarbor with a locally run distributed caching service.  Un
 @if (Model != null)
 {
 	<ul> 
-		@foreach (MvcFun.Models.Person v in Model)
+		@foreach (MvcFun.Models.POCO.Person v in Model)
 	 {
 			<li><a href="mailto:@v.Email" target="_blank">@v.Name</a></li>
 	 }

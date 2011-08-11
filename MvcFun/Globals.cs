@@ -6,6 +6,9 @@ using System.Configuration;
 
 using Enyim.Caching;
 using ServiceStack.Redis;
+using MongoDB;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace MvcFun
 {
@@ -32,9 +35,7 @@ namespace MvcFun
 					_redisClient = Globals.CreateRedisClient();
 				return _redisClient;
 			}
-		}
-
-		
+		}		
 
 		public static RedisClient CreateRedisClient()
 		{
@@ -43,5 +44,12 @@ namespace MvcFun
 			redisClient.Password = "553eee0ecf0a87501f5c67cb4302fc55";
 			return redisClient;
 		}
+		
+		public static MongoDatabase CreateMongoClient() 
+		{
+			var connectionString = ConfigurationManager.AppSettings["MONGOHQ_URL"];
+			return MongoDatabase.Create(connectionString);							
+		}
+
 	}
 }

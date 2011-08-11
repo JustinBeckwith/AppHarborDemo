@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MvcFun.Models;
+using MvcFun.Models.POCO;
 using MvcFun.ServiceReference1;
 
 using Twilio;
@@ -70,9 +70,8 @@ namespace MvcFun.Controllers
 			try
 			{
 
-				// connect to MONGO HQ out in the cloud
-				var connectionString = ConfigurationManager.AppSettings["MONGOHQ_URL"];
-				var database = MongoDatabase.Create(connectionString);
+				// connect to MONGO HQ out in the cloud				
+				var database = Globals.CreateMongoClient();
 				var collection = database.GetCollection<Person>("People");
 
 				// debug point to clear data
@@ -140,13 +139,13 @@ namespace MvcFun.Controllers
 			try
 			{
 
-				using (var db = new PersonContext())
+				using (var db = new MvcFun.Models.db3364Entities())
 				{
 					// we don't have a remove-all option
 					if (clearAll)
-					{
-						foreach (Person p in db.People)
-							db.People.Remove(p);
+					{						
+						foreach (MvcFun.Models.Person p in db.People)
+							db.People.DeleteObject(p);
 						db.SaveChanges();
 					}
 
@@ -154,7 +153,14 @@ namespace MvcFun.Controllers
 					if (db.People.Count() == 0)
 					{
 						foreach (Person p in this.GetPeople())
-							db.People.Add(p);
+							db.People.AddObject(new MvcFun.Models.Person()
+							{
+								Id = p.Id,
+								Name = p.Name,
+								Email = p.Email,
+								CreatedAt = p.CreatedAt,
+								UpdatedAt = p.UpdatedAt
+							});
 						db.SaveChanges();
 					}
 
@@ -198,10 +204,10 @@ namespace MvcFun.Controllers
 				{
 					// videos aren't in the cache - load them from the db
 					ViewBag.CacheHit = false;
-					using (var db = new PersonContext())
-					{
-						cacheData = db.People.ToList();
-					}
+
+					MongoDatabase db = Globals.CreateMongoClient();
+					cacheData = db.GetCollection<Person>("People").FindAll().ToList();
+										
 					var suc = Globals.Cache.Store(StoreMode.Add, "People", cacheData);
 				}
 				else
