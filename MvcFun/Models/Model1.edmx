@@ -21,9 +21,9 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="MvcFun.Models.EF" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <Schema Namespace="MvcFun.Models" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="FunContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="People" EntityType="MvcFun.Models.EF.Person" />
+          <EntitySet Name="People" EntityType="MvcFun.Models.Person" />
         </EntityContainer>
         <EntityType Name="Person">
           <Key>
@@ -41,7 +41,7 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="db3364ModelStoreContainer" CdmEntityContainer="FunContext">
-          <EntitySetMapping Name="People"><EntityTypeMapping TypeName="MvcFun.Models.EF.Person"><MappingFragment StoreEntitySet="People">
+          <EntitySetMapping Name="People"><EntityTypeMapping TypeName="MvcFun.Models.Person"><MappingFragment StoreEntitySet="People">
             <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="Name" ColumnName="Name" />
             <ScalarProperty Name="Email" ColumnName="Email" />
@@ -69,7 +69,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="Model1">
-        <EntityTypeShape EntityType="MvcFun.Models.EF.Person" Width="1.5" PointX="0.75" PointY="0.75" Height="1.9802864583333331" IsExpanded="true" />
+        <EntityTypeShape EntityType="MvcFun.Models.Person" Width="1.5" PointX="0.75" PointY="0.75" Height="1.9802864583333331" IsExpanded="true" />
       </Diagram>
     </Diagrams>
   </Designer>

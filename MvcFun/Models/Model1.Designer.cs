@@ -103,7 +103,7 @@ namespace MvcFun.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="MvcFun.Models.EF", Name="Person")]
+    [EdmEntityTypeAttribute(NamespaceName="MvcFun.Models", Name="Person")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
     public partial class Person : EntityObject
