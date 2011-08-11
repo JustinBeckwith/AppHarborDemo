@@ -219,7 +219,7 @@ namespace MvcFun.Controllers
 		public ActionResult Cache(FormCollection collection)
 		{
 			Globals.Cache.FlushAll();
-			return View();
+			return Cache();
 		}
 		
 		#endregion
