@@ -174,21 +174,17 @@ namespace MvcFun.Controllers
 
 		#region Cache
 		/// <summary>
-		/// 
+		/// load and store the data using memcahced
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult Cache()
 		{
 			object cacheData = null;
-
-			/*
-			 *  load and store the data using memcahced
-			 */
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-
+			
 			try
 			{
+				Stopwatch sw = new Stopwatch();
+				sw.Start();
 
 				if (!Globals.Cache.TryGet("People", out cacheData))
 				{
@@ -198,23 +194,22 @@ namespace MvcFun.Controllers
 					MongoDatabase db = Globals.CreateMongoClient();
 					cacheData = db.GetCollection<Person>("People").FindAll().ToList();
 										
-					var suc = Globals.Cache.Store(StoreMode.Add, "People", cacheData);
+					if (!Globals.Cache.Store(StoreMode.Add, "People", cacheData))
+						throw new Exception("Cache write failed!");
 				}
 				else
 				{
 					// video
 					ViewBag.CacheHit = true;
 				}
+
+				sw.Stop();
+				ViewBag.TimeToLoad = sw.ElapsedMilliseconds;
 			}
 			catch (Exception ex)
 			{
 				ViewBag.Message = "There was an error contacting the cache: " + ex.ToString();
-			}
-
-			sw.Stop();
-
-			ViewBag.TimeToLoad = sw.ElapsedMilliseconds;
-
+			}			
 
 			return View(cacheData);
 		}
