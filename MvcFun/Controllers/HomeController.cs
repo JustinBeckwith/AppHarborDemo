@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MvcFun.Models.POCO;
+using MvcFun.Models;
 using MvcFun.ServiceReference1;
 
 using Twilio;
@@ -136,29 +136,21 @@ namespace MvcFun.Controllers
 
 			try
 			{
-
-				using (var db = new MvcFun.Models.FunContext())
+				using (var db = new FunContext())
 				{
 					// we don't have a remove-all option
 					if (clearAll)
 					{						
 						foreach (MvcFun.Models.Person p in db.People)
-							db.People.DeleteObject(p);
+							db.People.Remove(p);
 						db.SaveChanges();
 					}
 
 					// if this is the first run populate the table
 					if (db.People.Count() == 0)
-					{
+					{						
 						foreach (Person p in this.GetPeople())
-							db.People.AddObject(new MvcFun.Models.Person()
-							{
-								Id = p.Id,
-								Name = p.Name,
-								Email = p.Email,
-								CreatedAt = p.CreatedAt,
-								UpdatedAt = p.UpdatedAt
-							});
+							db.People.Add(p);
 						db.SaveChanges();
 					}
 

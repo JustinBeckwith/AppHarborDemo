@@ -46,3 +46,5 @@ C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\Twilio.Twiml.xml
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\obj\Debug\MvcFun.dll
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\obj\Debug\MvcFun.pdb
+C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\EntityFramework.dll
+C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\EntityFramework.xml

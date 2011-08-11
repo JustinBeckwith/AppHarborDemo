@@ -19,7 +19,7 @@ Appharbor offers many flavors of database.  Their SQL Server implementation is u
 				} else {												
 					<span>Load Time: @ViewBag.MongoTime ms</span>
 					<ul> 
-						@foreach (MvcFun.Models.POCO.Person p in ViewBag.MongoData) {
+						@foreach (MvcFun.Models.Person p in ViewBag.MongoData) {
 							<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
 						}
 					</ul>			
@@ -33,7 +33,7 @@ Appharbor offers many flavors of database.  Their SQL Server implementation is u
 				} else {							
 					<span>Load Time: @ViewBag.RedisTime ms</span>
 					<ul> 
-						@foreach (MvcFun.Models.POCO.Person p in ViewBag.RedisData) {
+						@foreach (MvcFun.Models.Person p in ViewBag.RedisData) {
 							<li><a href="mailto:@p.Email" target="_blank">@p.Name</a></li>
 						}
 					</ul>			
