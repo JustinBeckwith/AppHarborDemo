@@ -53,7 +53,7 @@ namespace MvcFun.Controllers
 
 		#region Database
 		/// <summary>
-		/// 
+		/// Shows example of querying the same data from three databases
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult Database()
@@ -215,6 +215,11 @@ namespace MvcFun.Controllers
 			return View(cacheData);
 		}
 
+		/// <summary>
+		/// flush the memcached data and return the get view
+		/// </summary>
+		/// <param name="collection"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult Cache(FormCollection collection)
 		{
@@ -222,39 +227,7 @@ namespace MvcFun.Controllers
 			return Cache();
 		}
 		
-		#endregion
-		
-		#region PubSub
-		/// <summary>
-		/// this sample shows how to send a message to a redis pub/sub channel
-		/// </summary>
-		/// <returns></returns>
-		public ActionResult PubSub()
-		{
-			
-			return View();
-		}
-
-		[HttpPost]
-		public ActionResult PubSub(FormCollection collection)
-		{
-			// the channel name needs to be the same on both ends
-			const string ChannelName = "CHANNEL";
-			const string ClientId = "AppHarbor MVC";
-			
-			// create a new redis client
-			using (var redisPublisher = Globals.CreateRedisClient())
-			{
-				// publish the message to the "CHANNEL" channel
-				var message = string.Format("{0}: {1}", ClientId, collection["message"]);					
-				redisPublisher.PublishMessage(ChannelName, message);				
-			}
-			ViewBag.Message = "Message sent to queue";
-
-			return View();
-		}
-
-		#endregion
+		#endregion				
 
 		#region WCF
 		/// <summary>
@@ -273,6 +246,42 @@ namespace MvcFun.Controllers
 
 			return View();
 		}
+		#endregion
+
+		#region PubSub
+		/// <summary>
+		/// this sample shows how to send a message to a redis pub/sub channel
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult PubSub()
+		{
+			return View();
+		}
+
+		/// <summary>
+		/// publish the posted message to a redis channel
+		/// </summary>
+		/// <param name="collection"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult PubSub(FormCollection collection)
+		{
+			// the channel name needs to be the same on both ends
+			const string ChannelName = "CHANNEL";
+			const string ClientId = "AppHarbor MVC";
+
+			// create a new redis client
+			using (var redisPublisher = Globals.CreateRedisClient())
+			{
+				// publish the message to the "CHANNEL" channel
+				var message = string.Format("{0}: {1}", ClientId, collection["message"]);
+				redisPublisher.PublishMessage(ChannelName, message);
+			}
+			ViewBag.Message = "Message sent to queue";
+
+			return View();
+		}
+
 		#endregion
 
 		#region DeployHook
@@ -312,7 +321,7 @@ namespace MvcFun.Controllers
 
 		#region SendMessage
 		/// <summary>
-		/// 
+		/// send a text message using the twilio api
 		/// </summary>
 		/// <param name="message"></param>
 		protected void SendMessage(string message)

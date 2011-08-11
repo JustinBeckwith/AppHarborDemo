@@ -14,6 +14,8 @@ namespace MvcFun
 {
 	public class Globals
 	{
+		#region Properties
+		
 		protected static MemcachedClient _cache;
 		public static MemcachedClient Cache
 		{
@@ -35,8 +37,15 @@ namespace MvcFun
 					_redisClient = Globals.CreateRedisClient();
 				return _redisClient;
 			}
-		}		
+		}
 
+		#endregion
+
+		#region CreateRedisClient
+		/// <summary>
+		/// Create a shared client for redis
+		/// </summary>
+		/// <returns></returns>
 		public static RedisClient CreateRedisClient()
 		{
 			var redisUri = new Uri(ConfigurationManager.AppSettings.Get("REDISTOGO_URL"));
@@ -44,12 +53,19 @@ namespace MvcFun
 			redisClient.Password = "553eee0ecf0a87501f5c67cb4302fc55";
 			return redisClient;
 		}
-		
+		#endregion
+
+		#region CreateMongoClient
+		/// <summary>
+		/// Create a shared client for mongo db
+		/// </summary>
+		/// <returns></returns>
 		public static MongoDatabase CreateMongoClient() 
 		{
 			var connectionString = ConfigurationManager.AppSettings["MONGOHQ_URL"];
-			return MongoDatabase.Create(connectionString);							
+			return MongoDatabase.Create(connectionString);
 		}
+		#endregion
 
 	}
 }
