@@ -10,24 +10,21 @@ Memcacher provides AppHarbor with a locally run distributed caching service.  Un
 
 <br />
 
-<div>
-	Time to load: @ViewBag.TimeToLoad ms
-	<br />
-	Cache Hit: @ViewBag.CacheHit
-</div>
+@if (Model == null) {
+	<span class="font-color: red; font-weight: bold;">@ViewBag.Message</span>
+} else {
+	<div>
+		Time to load: @ViewBag.TimeToLoad ms
+		<br />
+		Cache Hit: @ViewBag.CacheHit
 
-<span class="font-color: red; font-weight: bold;">@ViewBag.Message</span>
-
-<br />
-
-@if (Model != null)
-{
-	<ul> 
-		@foreach (MvcFun.Models.POCO.Person v in Model)
-	 {
-			<li><a href="mailto:@v.Email" target="_blank">@v.Name</a></li>
-	 }
-	</ul>
+		<ul> 
+			@foreach (MvcFun.Models.Person v in Model)
+		 {
+				<li><a href="mailto:@v.Email" target="_blank">@v.Name</a></li>
+		 }
+		</ul>
+	</div>
 }
 	
 @using (Html.BeginForm())

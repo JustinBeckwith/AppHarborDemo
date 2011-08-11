@@ -209,6 +209,7 @@ namespace MvcFun.Controllers
 			catch (Exception ex)
 			{
 				ViewBag.Message = "There was an error contacting the cache: " + ex.ToString();
+				cacheData = null;
 			}			
 
 			return View(cacheData);
