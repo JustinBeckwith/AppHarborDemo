@@ -21,8 +21,6 @@ using Enyim.Caching.Memcached;
 using ServiceStack.Redis;
 using ServiceStack.Redis.Generic;
 
-using BookSleeve;
-
 using MongoDB;
 using MongoDB.Bson;
 using MongoDB.Driver;

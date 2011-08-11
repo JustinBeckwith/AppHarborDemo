@@ -7,8 +7,6 @@ C:\Users\justbe\Code\MvcFun\MvcFun\obj\Debug\MvcFun.dll
 C:\Users\justbe\Code\MvcFun\MvcFun\obj\Debug\MvcFun.pdb
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\MvcFun.dll
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\MvcFun.pdb
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\BookSleeve.dll
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\EntityFramework.dll
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\Enyim.Caching.dll
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\JWT.dll
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\MongoDB.Bson.dll
@@ -23,9 +21,6 @@ C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\Twilio.Api.dll
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\Twilio.Client.Capability.dll
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\Twilio.Mvc.dll
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\Twilio.Twiml.dll
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\BookSleeve.pdb
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\BookSleeve.xml
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\EntityFramework.xml
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\Enyim.Caching.pdb
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\Enyim.Caching.xml
 C:\Users\justbe\Mesh\Code\MvcFun\MvcFun\bin\MongoDB.Bson.pdb
