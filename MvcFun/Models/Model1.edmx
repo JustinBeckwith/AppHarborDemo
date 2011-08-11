@@ -22,7 +22,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MvcFun.Models.EF" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="db3364Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="FunContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="People" EntityType="MvcFun.Models.EF.Person" />
         </EntityContainer>
         <EntityType Name="Person">
@@ -40,7 +40,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="db3364ModelStoreContainer" CdmEntityContainer="db3364Entities">
+        <EntityContainerMapping StorageEntityContainer="db3364ModelStoreContainer" CdmEntityContainer="FunContext">
           <EntitySetMapping Name="People"><EntityTypeMapping TypeName="MvcFun.Models.EF.Person"><MappingFragment StoreEntitySet="People">
             <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="Name" ColumnName="Name" />

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="db3364ModelStoreContainer" CdmEntityContainer="db3364Entities">
+  <EntityContainerMapping StorageEntityContainer="db3364ModelStoreContainer" CdmEntityContainer="FunContext">
     <EntitySetMapping Name="People">
       <EntityTypeMapping TypeName="MvcFun.Models.EF.Person">
         <MappingFragment StoreEntitySet="People">

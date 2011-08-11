@@ -24,32 +24,32 @@ namespace MvcFun.Models
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class db3364Entities : ObjectContext
+    public partial class FunContext : ObjectContext
     {
         #region Constructors
     
         /// <summary>
-        /// Initializes a new db3364Entities object using the connection string found in the 'db3364Entities' section of the application configuration file.
+        /// Initializes a new FunContext object using the connection string found in the 'FunContext' section of the application configuration file.
         /// </summary>
-        public db3364Entities() : base("name=db3364Entities", "db3364Entities")
+        public FunContext() : base("name=FunContext", "FunContext")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new db3364Entities object.
+        /// Initialize a new FunContext object.
         /// </summary>
-        public db3364Entities(string connectionString) : base(connectionString, "db3364Entities")
+        public FunContext(string connectionString) : base(connectionString, "FunContext")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new db3364Entities object.
+        /// Initialize a new FunContext object.
         /// </summary>
-        public db3364Entities(EntityConnection connection) : base(connection, "db3364Entities")
+        public FunContext(EntityConnection connection) : base(connection, "FunContext")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();

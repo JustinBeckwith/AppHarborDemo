@@ -137,7 +137,7 @@ namespace MvcFun.Controllers
 			try
 			{
 
-				using (var db = new MvcFun.Models.db3364Entities())
+				using (var db = new MvcFun.Models.FunContext())
 				{
 					// we don't have a remove-all option
 					if (clearAll)
