@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using MvcFun.Models;
-using MvcFun.ServiceReference1;
+
 
 using Twilio;
 
@@ -45,7 +45,7 @@ namespace MvcFun.Controllers
 		/// <returns></returns>
 		public ActionResult Index()
 		{
-			ViewBag.Message = "Welcome to my AppHarbor demo application!";						
+			ViewBag.Message = "Welcome to my AppHarbor demo application! Change!";						
 
 			return View();
 		}
@@ -239,10 +239,10 @@ namespace MvcFun.Controllers
 			//throw new Exception("Waving my arms about wildly!");
 			ViewBag.where = ConfigurationManager.AppSettings["where"];
 
-			IService1 svc = new Service1Client();
-			string result = svc.GetData(23);
+            //IService1 svc = new Service1Client();
+            //string result = svc.GetData(23);
 
-			ViewBag.data = result;
+            ViewBag.data = "";
 
 			return View();
 		}
