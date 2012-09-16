@@ -1,7 +1,0 @@
-C:\Users\justbe\Code\MvcFun\MvcFun\bin\MvcFun.dll
-C:\Users\justbe\Code\MvcFun\MvcFun\bin\MvcFun.pdb
-C:\Users\justbe\Code\MvcFun\MvcFun\bin\EntityFramework.dll
-C:\Users\justbe\Code\MvcFun\MvcFun\bin\EntityFramework.xml
-C:\Users\justbe\Code\MvcFun\MvcFun\obj\Release\ResolveAssemblyReference.cache
-C:\Users\justbe\Code\MvcFun\MvcFun\obj\Release\MvcFun.dll
-C:\Users\justbe\Code\MvcFun\MvcFun\obj\Release\MvcFun.pdb

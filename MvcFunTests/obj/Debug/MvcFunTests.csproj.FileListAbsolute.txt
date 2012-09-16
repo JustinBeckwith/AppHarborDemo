@@ -1,5 +1,0 @@
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFunTests\bin\Debug\MvcFunTests.dll
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFunTests\bin\Debug\MvcFunTests.pdb
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFunTests\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFunTests\obj\Debug\MvcFunTests.dll
-C:\Users\justbe\Mesh\Code\MvcFun\MvcFunTests\obj\Debug\MvcFunTests.pdb
