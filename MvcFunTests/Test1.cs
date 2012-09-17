@@ -65,5 +65,13 @@ namespace MvcFunTests
 			var x = 1 + 3;
 			Assert.IsTrue(x == 4);
 		}
+
+
+        [TestMethod]
+        public void TrySomethingFun()
+        {
+            var x = 1 + 4;
+            Assert.IsTrue(x == 2);
+        }
 	}
 }
