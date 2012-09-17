@@ -272,7 +272,7 @@ namespace MvcFun.Controllers
 
 			// create a new redis client
 			using (var redisPublisher = Globals.CreateRedisClient())
-			{
+			{                
 				// publish the message to the "CHANNEL" channel
 				var message = string.Format("{0}: {1}", ClientId, collection["message"]);
 				redisPublisher.PublishMessage(ChannelName, message);
